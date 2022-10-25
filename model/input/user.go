@@ -1,0 +1,1 @@
+input struct user
