@@ -1,18 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"mygram-golang/conf"
-	"mygram-golang/controller"
-	"mygram-golang/middleware"
-	"mygram-golang/repository"
-	"mygram-golang/service"
+	"project2/config"
+	"project2/controller"
+	"project2/middleware"
+	"project2/repository"
+	"project2/service"
 
 	"github.com/gin-gonic/gin"
-
 )
 
 func main() {
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	fmt.Println("Error loading .env file")
+	// }
+
 	db := config.InitDB()
 
 	userRepository := repository.NewUserRepository(db)
@@ -26,7 +29,6 @@ func main() {
 	photoService := service.NewPhotoService(photoRepository)
 	photoController := controller.NewPhotoController(photoService, commentService, userService)
 	commentController := controller.NewCommentController(commentService, photoService)
-
 
 	router := gin.Default()
 
