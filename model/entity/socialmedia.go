@@ -10,3 +10,7 @@ type SocialMedia struct {
 	CreatedAt time.Time `json:"-"`
 	UpdatedAt time.Time `json:"-"`
 }
+
+func (SocialMedia) TableName() string {
+	return "socialmedia"
+}

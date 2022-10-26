@@ -20,3 +20,15 @@ type GetCommentResponse struct {
 	CreatedAt time.Time `json:"-"`
 	Photo     entity.Photo
 }
+
+func GetAllComment(comment entity.Comment, photo entity.Photo) GetCommentResponse {
+	var response GetCommentResponse
+
+	response.ID = comment.ID
+	response.Message = comment.Message
+	response.PhotoID = comment.PhotoID
+	response.CreatedAt = comment.CreatedAt
+	response.Photo = photo
+
+	return response
+}

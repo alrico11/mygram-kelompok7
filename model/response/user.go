@@ -11,6 +11,10 @@ type UserRegisterResponse struct {
 	CreatedAt time.Time `json:"date"`
 }
 
+type UserLoginResponse struct {
+	Token string `json:"token"`
+}
+
 type UserUpdateResponse struct {
 	ID       int    `json:"id"`
 	Age      int    `json:"age"`

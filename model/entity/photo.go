@@ -16,3 +16,7 @@ type Photo struct {
 	UpdatedAt time.Time      `json:"-"`
 	DeletedAt gorm.DeletedAt `json:"-"`
 }
+
+func (Photo) TableName() string {
+	return "photo"
+}

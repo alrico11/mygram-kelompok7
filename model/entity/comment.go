@@ -15,3 +15,7 @@ type Comment struct {
 	UpdatedAt time.Time      `json:"-"`
 	DeletedAt gorm.DeletedAt `json:"-"`
 }
+
+func (Comment) TableName() string {
+	return "comment"
+}
