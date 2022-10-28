@@ -7,7 +7,7 @@ import (
 )
 
 type UserRepository interface {
-	Save(user entity.User) (entity.User, error)
+	CreateUser(user entity.User) (entity.User, error)
 	FindByEmail(email string) (entity.User, error)
 	FindByID(ID int) (entity.User, error)
 	Update(ID int, user entity.User) (entity.User, error)
@@ -25,7 +25,7 @@ func NewUserRepository(db *gorm.DB) *userRepository {
 	return &userRepository{db}
 }
 
-func (r *userRepository) Save(user entity.User) (entity.User, error) {
+func (r *userRepository) CreateUser(user entity.User) (entity.User, error) {
 	err := r.db.Create(&user).Error
 
 	if err != nil {

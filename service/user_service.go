@@ -26,26 +26,46 @@ func NewUserService(userRepository repository.UserRepository) *userService {
 }
 
 func (s *userService) CreateUser(input input.RegisterUserInput) (entity.User, error) {
-	newUser := entity.User{}
-	newUser.Username = input.Username
-	newUser.Age = input.Age
-	newUser.Email = input.Email
+	// newUser := entity.User{}
+	// newUser.Username = input.Username
+	// newUser.Age = input.Age
+	// newUser.Email = input.Email
 
+	// passwordHash, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.MinCost)
+
+	// if err != nil {
+	// 	return entity.User{}, err
+	// }
+
+	// newUser.Password = string(passwordHash)
+
+	// createdUser, err := s.userRepository.Save(newUser)
+
+	// if err != nil {
+	// 	return entity.User{}, err
+	// }
+
+	// return createdUser, nil
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.MinCost)
 
 	if err != nil {
 		return entity.User{}, err
 	}
 
-	newUser.Password = string(passwordHash)
+	user := entity.User{
+		Age:      input.Age,
+		Email:    input.Email,
+		Username: input.Username,
+		Password: string(passwordHash),
+	}
 
-	createdUser, err := s.userRepository.Save(newUser)
+	createdUser, err := s.userRepository.CreateUser(user)
 
 	if err != nil {
 		return entity.User{}, err
 	}
 
-	return createdUser, nil
+	return createdUser, err
 }
 
 func (s *userService) GetUserByEmail(email string) (entity.User, error) {
