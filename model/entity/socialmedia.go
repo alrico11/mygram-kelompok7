@@ -9,6 +9,7 @@ type SocialMedia struct {
 	UserID    int       `json:"user_id"`
 	CreatedAt time.Time `json:"-"`
 	UpdatedAt time.Time `json:"-"`
+	User      User
 }
 
 func (SocialMedia) TableName() string {

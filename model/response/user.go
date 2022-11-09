@@ -16,8 +16,13 @@ type UserLoginResponse struct {
 }
 
 type UserUpdateResponse struct {
-	ID       int    `json:"id"`
-	Age      int    `json:"age"`
-	Email    string `json:"email"`
-	Username string `json:"username"`
+	ID        int       `json:"id"`
+	Age       int       `json:"age"`
+	Email     string    `json:"email"`
+	Username  string    `json:"username"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type UserDeleteResponse struct {
+	Message string `json:"message"`
 }

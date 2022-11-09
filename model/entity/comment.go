@@ -2,18 +2,17 @@ package entity
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Comment struct {
-	ID        int            `json:"id"`
-	Message   string         `json:"message"`
-	PhotoID   int            `json:"photo_id"`
-	UserID    int            `json:"user_id"`
-	CreatedAt time.Time      `json:"-"`
-	UpdatedAt time.Time      `json:"-"`
-	DeletedAt gorm.DeletedAt `json:"-"`
+	ID        int       `json:"id"`
+	UserID    int       `json:"user_id"`
+	PhotoID   int       `json:"photo_id"`
+	Message   string    `json:"message"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	User      User
+	Photo     Photo
 }
 
 func (Comment) TableName() string {
