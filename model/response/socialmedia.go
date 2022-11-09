@@ -10,7 +10,7 @@ type SocialMediaCreateResponse struct {
 	Name      string    `json:"name"`
 	URL       string    `json:"social_media_url"`
 	UsedID    int       `json:"user_id"`
-	CreatedAt time.Time `json:"date"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type SocialMediaUpdateResponse struct {
@@ -18,16 +18,21 @@ type SocialMediaUpdateResponse struct {
 	Name      string    `json:"name"`
 	URL       string    `json:"social_media_url"`
 	UsedID    int       `json:"user_id"`
-	UpdatedAt time.Time `json:"date"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type GetSocialMedia struct {
-	ID        int       `json:"id"`
-	Name      string    `json:"name"`
-	URL       string    `json:"social_media_url"`
-	UsedID    int       `json:"user_id"`
-	CreatedAt time.Time `json:"date"`
-	User      entity.User
+	ID        int         `json:"id"`
+	Name      string      `json:"name"`
+	URL       string      `json:"social_media_url"`
+	UsedID    int         `json:"user_id"`
+	CreatedAt time.Time   `json:"created_at"`
+	UpdateAt  time.Time   `json:"updated_at"`
+	User      entity.User `json:"User"`
+}
+
+type SocialMediaDeleteResponse struct {
+	Message string `json:"message"`
 }
 
 func GetAllSocialMedia(social []entity.SocialMedia, user entity.User) []GetSocialMedia {

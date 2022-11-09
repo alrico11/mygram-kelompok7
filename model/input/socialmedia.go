@@ -2,7 +2,7 @@ package input
 
 type SocialInput struct {
 	Name string `json:"name" binding:"required"`
-	URL  string `json:"social_media_url"`
+	URL  string `json:"social_media_url" binding:"required"`
 }
 
 type DeleteSocialMedia struct {

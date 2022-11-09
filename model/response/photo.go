@@ -60,3 +60,7 @@ func GetAllPhotosUser(photos []entity.Photo) []GetPhotoUser {
 
 	return allPhotoUser
 }
+
+type PhotoDeleteResponse struct {
+	Message string `json:"message"`
+}
