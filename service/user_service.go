@@ -110,11 +110,10 @@ func (s *userService) UpdateUser(ID int, input input.UpdateUserInput) (entity.Us
 	updatedUser := entity.User{
 		Username: input.Username,
 		Email:    input.Email,
-		Age:      input.Age,
 	}
 
-	if input.Passowrd != "" {
-		passwordHash, err := bcrypt.GenerateFromPassword([]byte(input.Passowrd), bcrypt.MinCost)
+	if input.Password != "" {
+		passwordHash, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.MinCost)
 
 		if err != nil {
 			return entity.User{}, err

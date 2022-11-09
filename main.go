@@ -36,7 +36,7 @@ func main() {
 
 	router := gin.Default()
 
-	// route
+	// Delete
 	router.POST("/users/register", userController.RegisterUser)
 	router.POST("/users/login", userController.Login)
 	router.PUT("/users", middleware.AuthMiddleware(), userController.UpdateUser)

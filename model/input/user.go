@@ -13,8 +13,7 @@ type LoginUserInput struct {
 }
 
 type UpdateUserInput struct {
-	Email    string `json:"email"`
+	Email    string `json:"email" binding:"email"`
 	Username string `json:"username"`
-	Passowrd string `json:"password"`
-	Age      int    `json:"age"`
+	Password string `json:"password" binding:"min=6"`
 }

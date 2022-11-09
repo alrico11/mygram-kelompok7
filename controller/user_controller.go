@@ -119,16 +119,22 @@ func (h *userController) Login(c *gin.Context) {
 		return
 	}
 
-	// crete token
+	// create token
 	jwtService := middleware.NewService()
 	token, err := jwtService.GenerateToken(user.ID)
+	if err != nil {
+		response := helper.APIResponse("failed", "failed to generate token!")
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	loginResponse := response.UserLoginResponse{
+		Token: token,
+	}
 
 	// return token
-	response := helper.APIResponse("ok", gin.H{
-		"token": token,
-	})
+	response := helper.APIResponse("ok", loginResponse)
 	c.JSON(http.StatusOK, response)
-	return
 }
 
 func (h *userController) UpdateUser(c *gin.Context) {
@@ -144,6 +150,7 @@ func (h *userController) UpdateUser(c *gin.Context) {
 			"errors": errorMessages,
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
 	_, err = h.userService.UpdateUser(currentUser, inputUserUpdate)
@@ -154,13 +161,26 @@ func (h *userController) UpdateUser(c *gin.Context) {
 			"errors": errorMessages,
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
 	userUpdated, err := h.userService.GetUserByID(currentUser)
+	if err != nil {
+		response := helper.APIResponse("failed", "Cannot fetch user!")
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
 
-	response := helper.APIResponse("ok", userUpdated)
+	updateResponse := response.UserUpdateResponse{
+		ID:        userUpdated.ID,
+		Email:     userUpdated.Email,
+		Username:  userUpdated.Username,
+		Age:       userUpdated.Age,
+		UpdatedAt: userUpdated.UpdatedAt,
+	}
+
+	response := helper.APIResponse("ok", updateResponse)
 	c.JSON(http.StatusOK, response)
-	return
 }
 
 func (h *userController) DeleteUser(c *gin.Context) {
@@ -176,28 +196,30 @@ func (h *userController) DeleteUser(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, response)
 	}
 
-	response := helper.APIResponse("ok", "Success deleted user!")
+	deleteResponse := response.UserDeleteResponse{
+		Message: "Your account has been successfully deleted",
+	}
+
+	response := helper.APIResponse("ok", deleteResponse)
 	c.JSON(http.StatusOK, response)
-	return
 }
 
 func (h *userController) TestUser(c *gin.Context) {
 	id_user, err := c.Get("currentUser")
 
-	if err == false {
+	if !err {
 		c.JSON(http.StatusNotFound, helper.APIResponse("not created", err))
 		return
 	}
 
 	c.JSON(http.StatusOK, helper.APIResponse("created", id_user))
-	return
-
 }
 
 func convertToUserResponse(u entity.User) response.UserRegisterResponse {
 	return response.UserRegisterResponse{
 		Age:      u.Age,
 		Email:    u.Email,
+		ID:       u.ID,
 		Password: u.Password,
 		Username: u.Username,
 	}
