@@ -45,9 +45,20 @@ func (h *userController) RegisterUser(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": convertToUserResponse(user),
-	})
+
+	registerResponse := response.UserRegisterResponse{
+		ID:       user.ID,
+		Age:      user.Age,
+		Email:    user.Email,
+		Password: user.Password,
+		Username: user.Username,
+	}
+
+	response := helper.APIResponse("created", registerResponse)
+	c.JSON(201, response)
+	// c.JSON(http.StatusOK, gin.H{
+	// 	"data": convertToUserResponse(user),
+	// })
 
 	// // send to service
 	// newUser, err := h.userService.CreateUser(input)
