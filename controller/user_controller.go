@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"project2/helper"
 	"project2/middleware"
-	"project2/model/entity"
 	"project2/model/input"
 	"project2/model/response"
 	"project2/service"
@@ -24,7 +23,7 @@ func NewUserController(userService service.UserService) *userController {
 }
 
 func (h *userController) RegisterUser(c *gin.Context) {
-	var input input.RegisterUserInput
+	var input input.UserRegisterInput
 
 	err := c.ShouldBindJSON(&input)
 
@@ -50,7 +49,6 @@ func (h *userController) RegisterUser(c *gin.Context) {
 		ID:       user.ID,
 		Age:      user.Age,
 		Email:    user.Email,
-		Password: user.Password,
 		Username: user.Username,
 	}
 
@@ -84,7 +82,7 @@ func (h *userController) RegisterUser(c *gin.Context) {
 }
 
 func (h *userController) Login(c *gin.Context) {
-	var input input.LoginUserInput
+	var input input.UserLoginInput
 
 	err := c.ShouldBindJSON(&input)
 
@@ -151,7 +149,7 @@ func (h *userController) Login(c *gin.Context) {
 func (h *userController) UpdateUser(c *gin.Context) {
 	currentUser := c.MustGet("currentUser").(int)
 
-	var inputUserUpdate input.UpdateUserInput
+	var inputUserUpdate input.UserUpdateInput
 
 	err := c.ShouldBindJSON(&inputUserUpdate)
 
@@ -226,12 +224,12 @@ func (h *userController) TestUser(c *gin.Context) {
 	c.JSON(http.StatusOK, helper.APIResponse("created", id_user))
 }
 
-func convertToUserResponse(u entity.User) response.UserRegisterResponse {
-	return response.UserRegisterResponse{
-		Age:      u.Age,
-		Email:    u.Email,
-		ID:       u.ID,
-		Password: u.Password,
-		Username: u.Username,
-	}
-}
+// func convertToUserResponse(u entity.User) response.UserRegisterResponse {
+// 	return response.UserRegisterResponse{
+// 		Age:      u.Age,
+// 		Email:    u.Email,
+// 		ID:       u.ID,
+// 		Password: u.Password,
+// 		Username: u.Username,
+// 	}
+// }
