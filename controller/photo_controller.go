@@ -21,7 +21,7 @@ func NewPhotoController(photoService service.PhotoService, commentService servic
 }
 
 func (h *photoController) AddNewPhoto(c *gin.Context) {
-	var input input.InputPhotos
+	var input input.PhotoCreateInput
 
 	currentUser := c.MustGet("currentUser").(int)
 
@@ -77,7 +77,7 @@ func (h *photoController) DeletePhoto(c *gin.Context) {
 		return
 	}
 
-	var idPhotoUri input.DeletePhoto
+	var idPhotoUri input.PhotoDeleteIDUser
 
 	err := c.ShouldBindUri(&idPhotoUri)
 
@@ -153,7 +153,7 @@ func (h *photoController) GetPhotos(c *gin.Context) {
 
 func (h *photoController) GetPhoto(c *gin.Context) {
 
-	var idPhotoUri input.DeletePhoto
+	var idPhotoUri input.PhotoDeleteIDUser
 
 	err := c.ShouldBindUri(&idPhotoUri)
 
@@ -210,7 +210,7 @@ func (h *photoController) UpdatePhoto(c *gin.Context) {
 		return
 	}
 
-	updatePhoto := input.UpdatePhoto{}
+	updatePhoto := input.PhotoUpdateInput{}
 
 	err := c.ShouldBindJSON(&updatePhoto)
 
@@ -223,7 +223,7 @@ func (h *photoController) UpdatePhoto(c *gin.Context) {
 		return
 	}
 
-	var idPhotoUri input.UpdatePhotoIDUser
+	var idPhotoUri input.PhotoUpdateIDUser
 
 	err = c.ShouldBindUri(&idPhotoUri)
 
