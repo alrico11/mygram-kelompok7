@@ -15,26 +15,27 @@ type CreatePhotoResponse struct {
 }
 
 type GetPhotoUser struct {
-	ID        int              `json:"id"`
-	Title     string           `json:"title"`
-	Caption   string           `json:"caption"`
-	PhotoURL  string           `json:"photo_url"`
-	CreatedAt time.Time        `json:"created_at"`
-	Comments  []entity.Comment `json:"comments"`
+	ID        int         `json:"id"`
+	Title     string      `json:"title"`
+	Caption   string      `json:"caption"`
+	PhotoURL  string      `json:"photo_url"`
+	UserID    int         `json:"user_id"`
+	CreatedAt time.Time   `json:"created_at"`
+	UpdatedAt time.Time   `json:"updated_at"`
+	User      UserInPhoto `json:"User"`
 }
 
-type GetPhotoDetailUser struct {
-	ID        int              `json:"id"`
-	Title     string           `json:"title"`
-	Caption   string           `json:"caption"`
-	PhotoURL  string           `json:"photo_url"`
-	CreatedAt time.Time        `json:"created_at"`
-	User      UserInPhoto      `json:"user"`
-	Comments  []entity.Comment `json:"comments"`
-}
+// type GetPhotoDetailUser struct {
+// 	ID        int              `json:"id"`
+// 	Title     string           `json:"title"`
+// 	Caption   string           `json:"caption"`
+// 	PhotoURL  string           `json:"photo_url"`
+// 	CreatedAt time.Time        `json:"created_at"`
+// 	User      UserInPhoto      `json:"user"`
+// 	Comments  []entity.Comment `json:"comments"`
+// }
 
 type UserInPhoto struct {
-	ID       int    `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 }
@@ -59,6 +60,15 @@ func GetAllPhotosUser(photos []entity.Photo) []GetPhotoUser {
 	}
 
 	return allPhotoUser
+}
+
+type PhotoUpdateResponse struct {
+	ID        int       `json:"id"`
+	Title     string    `json:"title"`
+	Caption   string    `json:"caption"`
+	PhotoURL  string    `json:"photo_url"`
+	UserID    int       `json:"user_id"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type PhotoDeleteResponse struct {

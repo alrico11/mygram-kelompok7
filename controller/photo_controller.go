@@ -13,7 +13,7 @@ import (
 type photoController struct {
 	photoService   service.PhotoService
 	commentService service.CommentService
-	userSerice     service.UserService
+	userService    service.UserService
 }
 
 func NewPhotoController(photoService service.PhotoService, commentService service.CommentService, userService service.UserService) *photoController {
@@ -65,7 +65,6 @@ func (h *photoController) AddNewPhoto(c *gin.Context) {
 
 	response := helper.APIResponse("created", newPhotoResponse)
 	c.JSON(http.StatusOK, response)
-	return
 }
 
 func (h *photoController) DeletePhoto(c *gin.Context) {
@@ -107,7 +106,6 @@ func (h *photoController) DeletePhoto(c *gin.Context) {
 
 	response := helper.APIResponse("ok", "success deleted photo!")
 	c.JSON(http.StatusOK, response)
-	return
 }
 
 func (h *photoController) GetPhotos(c *gin.Context) {
@@ -119,32 +117,36 @@ func (h *photoController) GetPhotos(c *gin.Context) {
 		return
 	}
 
-	photos, err := h.photoService.GetPhotosUser(currentUser)
+	photos, err := h.photoService.GetPhotosAll()
+	if err != nil {
+		response := helper.APIResponse("failed", gin.H{
+			"errors": "failed to fetch all photo!",
+		})
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
 
 	var photoResponse []response.GetPhotoUser
 
 	for _, index := range photos {
 
-		commentTmp, _ := h.commentService.GetCommentsByPhotoID(index.ID)
+		userTmp, _ := h.userService.GetUserByID(index.UserID)
 
 		photoResponseTmp := response.GetPhotoUser{
 			ID:        index.ID,
 			Title:     index.Title,
 			Caption:   index.Caption,
 			PhotoURL:  index.PhotoURL,
+			UserID:    index.UserID,
 			CreatedAt: index.CreatedAt,
-			Comments:  commentTmp,
+			UpdatedAt: index.UpdatedAt,
+			User: response.UserInPhoto{
+				Username: userTmp.Username,
+				Email:    userTmp.Email,
+			},
 		}
 
 		photoResponse = append(photoResponse, photoResponseTmp)
-	}
-
-	if err != nil {
-		errorMessages := helper.FormatValidationError(err)
-		response := helper.APIResponse("failed", gin.H{
-			"errors": errorMessages,
-		})
-		c.JSON(http.StatusUnprocessableEntity, response)
 	}
 
 	response := helper.APIResponse("ok", photoResponse)
@@ -173,24 +175,24 @@ func (h *photoController) GetPhoto(c *gin.Context) {
 		return
 	}
 
-	user, err := h.userSerice.GetUserByID(photo.UserID)
+	user, err := h.userService.GetUserByID(photo.UserID)
 	if err != nil {
 		response := helper.APIResponse("failed", "user not found!")
 		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 		return
 	}
 
-	comments, _ := h.commentService.GetCommentsByPhotoID(idPhoto)
+	// _, _ := h.commentService.GetCommentsByPhotoID(idPhoto)
 
-	photoResponse := response.GetPhotoDetailUser{
+	photoResponse := response.GetPhotoUser{
 		ID:        photo.ID,
 		Title:     photo.Title,
 		Caption:   photo.Caption,
 		PhotoURL:  photo.PhotoURL,
+		UserID:    photo.UserID,
 		CreatedAt: photo.CreatedAt,
-		Comments:  comments,
+		UpdatedAt: photo.UpdatedAt,
 		User: response.UserInPhoto{
-			ID:       user.ID,
 			Username: user.Username,
 			Email:    user.Email,
 		},
@@ -198,7 +200,6 @@ func (h *photoController) GetPhoto(c *gin.Context) {
 
 	response := helper.APIResponse("ok", photoResponse)
 	c.JSON(http.StatusOK, response)
-	return
 }
 
 func (h *photoController) UpdatePhoto(c *gin.Context) {

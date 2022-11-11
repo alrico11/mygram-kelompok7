@@ -7,8 +7,9 @@ import (
 )
 
 type PhotoService interface {
-	CreatePhoto(photoInput input.InputPhotos, idUser int) (entity.Photo, error)
+	CreatePhoto(photoInput input.PhotoCreateInput, idUser int) (entity.Photo, error)
 	DeletePhoto(ID int) (entity.Photo, error)
+	GetPhotosAll() ([]entity.Photo, error)
 	GetPhotosUser(idUser int) ([]entity.Photo, error)
 	GetPhotoByID(idPhoto int) (entity.Photo, error)
 	UpdatePhoto(ID int, input input.PhotoUpdateInput) (entity.Photo, error)
@@ -22,7 +23,7 @@ func NewPhotoService(photoRepository repository.PhotoRepository) *photoService {
 	return &photoService{photoRepository}
 }
 
-func (s *photoService) CreatePhoto(input input.InputPhotos, idUser int) (entity.Photo, error) {
+func (s *photoService) CreatePhoto(input input.PhotoCreateInput, idUser int) (entity.Photo, error) {
 	newPhoto := entity.Photo{
 		Title:    input.Title,
 		Caption:  input.Caption,
@@ -42,6 +43,16 @@ func (s *photoService) CreatePhoto(input input.InputPhotos, idUser int) (entity.
 
 func (s *photoService) GetPhotosUser(idUser int) ([]entity.Photo, error) {
 	photos, err := s.photoRepository.FindByUserID(idUser)
+
+	if err != nil {
+		return []entity.Photo{}, err
+	}
+
+	return photos, nil
+}
+
+func (s *photoService) GetPhotosAll() ([]entity.Photo, error) {
+	photos, err := s.photoRepository.GetAll()
 
 	if err != nil {
 		return []entity.Photo{}, err

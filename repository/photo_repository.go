@@ -9,6 +9,7 @@ import (
 type PhotoRepository interface {
 	Save(photo entity.Photo) (entity.Photo, error)
 	Delete(ID int) (entity.Photo, error)
+	GetAll() ([]entity.Photo, error)
 	FindByID(ID int) (entity.Photo, error)
 	FindByUserID(ID int) ([]entity.Photo, error)
 	Update(photo entity.Photo, ID int) (entity.Photo, error)
@@ -30,6 +31,18 @@ func (r *photoRepository) Save(photo entity.Photo) (entity.Photo, error) {
 	}
 
 	return photo, nil
+}
+
+func (r *photoRepository) GetAll() ([]entity.Photo, error) {
+	var photos []entity.Photo
+
+	err := r.db.Find(&photos).Error
+
+	if err != nil {
+		return []entity.Photo{}, err
+	}
+
+	return photos, nil
 }
 
 func (r *photoRepository) FindByID(ID int) (entity.Photo, error) {
