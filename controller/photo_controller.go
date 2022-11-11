@@ -48,9 +48,9 @@ func (h *photoController) AddNewPhoto(c *gin.Context) {
 	newPhoto, err := h.photoService.CreatePhoto(input, currentUser)
 
 	if err != nil {
-		errorMessages := helper.FormatValidationError(err)
-
-		response := helper.APIResponse("failed", errorMessages)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": err.Error(),
+		})
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
@@ -81,7 +81,7 @@ func (h *photoController) DeletePhoto(c *gin.Context) {
 	err := c.ShouldBindUri(&idPhotoUri)
 
 	if err != nil {
-		response := helper.APIResponse("failed", err)
+		response := helper.APIResponse("failed", err.Error())
 		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 		return
 	}
@@ -94,14 +94,14 @@ func (h *photoController) DeletePhoto(c *gin.Context) {
 		return
 	}
 
-	_, err = h.photoService.DeletePhoto(idPhoto)
+	_, err = h.photoService.DeletePhoto(idPhoto, currentUser)
 
 	if err != nil {
-		errorMessages := helper.FormatValidationError(err)
 		response := helper.APIResponse("failed", gin.H{
-			"errors": errorMessages,
+			"errors": err.Error(),
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
 	deleteResponse := response.PhotoDeleteResponse{
@@ -124,7 +124,7 @@ func (h *photoController) GetPhotos(c *gin.Context) {
 	photos, err := h.photoService.GetPhotosAll()
 	if err != nil {
 		response := helper.APIResponse("failed", gin.H{
-			"errors": "failed to fetch all photo!",
+			"errors": err.Error(),
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
@@ -162,6 +162,14 @@ func (h *photoController) GetPhoto(c *gin.Context) {
 	var idPhotoUri input.PhotoDeleteIDUser
 
 	err := c.ShouldBindUri(&idPhotoUri)
+	if err != nil {
+		errorMessages := helper.FormatValidationError(err)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": errorMessages,
+		})
+		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+		return
+	}
 
 	idPhoto := idPhotoUri.ID
 
@@ -243,18 +251,27 @@ func (h *photoController) UpdatePhoto(c *gin.Context) {
 
 	id_photo := idPhotoUri.ID
 
-	_, err = h.photoService.UpdatePhoto(id_photo, updatePhoto)
+	_, err = h.photoService.UpdatePhoto(currentUser, id_photo, updatePhoto)
 
 	if err != nil {
-		errorMessages := helper.FormatValidationError(err)
 		response := helper.APIResponse("failed", gin.H{
-			"errors": errorMessages,
+			"errors": err.Error(),
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
 	photoUpdated, _ := h.photoService.GetPhotoByID(id_photo)
 
-	response := helper.APIResponse("ok", photoUpdated)
+	photoResponse := response.PhotoUpdateResponse{
+		ID:        photoUpdated.ID,
+		Title:     photoUpdated.Title,
+		Caption:   photoUpdated.Caption,
+		PhotoURL:  photoUpdated.PhotoURL,
+		UserID:    photoUpdated.UserID,
+		UpdatedAt: photoUpdated.UpdatedAt,
+	}
+
+	response := helper.APIResponse("ok", photoResponse)
 	c.JSON(http.StatusOK, response)
 }
