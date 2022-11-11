@@ -10,10 +10,10 @@ import (
 )
 
 type UserService interface {
-	CreateUser(userInput input.RegisterUserInput) (entity.User, error)
+	CreateUser(userInput input.UserRegisterInput) (entity.User, error)
 	GetUserByEmail(email string) (entity.User, error)
 	GetUserByID(ID int) (entity.User, error)
-	UpdateUser(ID int, input input.UpdateUserInput) (entity.User, error)
+	UpdateUser(ID int, input input.UserUpdateInput) (entity.User, error)
 	DeleteUser(ID int) (entity.User, error)
 }
 
@@ -25,7 +25,7 @@ func NewUserService(userRepository repository.UserRepository) *userService {
 	return &userService{userRepository}
 }
 
-func (s *userService) CreateUser(input input.RegisterUserInput) (entity.User, error) {
+func (s *userService) CreateUser(input input.UserRegisterInput) (entity.User, error) {
 	// newUser := entity.User{}
 	// newUser.Username = input.Username
 	// newUser.Age = input.Age
@@ -96,7 +96,7 @@ func (s *userService) GetUserByID(ID int) (entity.User, error) {
 	return user, nil
 }
 
-func (s *userService) UpdateUser(ID int, input input.UpdateUserInput) (entity.User, error) {
+func (s *userService) UpdateUser(ID int, input input.UserUpdateInput) (entity.User, error) {
 	userResult, err := s.userRepository.FindByID(ID)
 
 	if err != nil {
@@ -110,11 +110,10 @@ func (s *userService) UpdateUser(ID int, input input.UpdateUserInput) (entity.Us
 	updatedUser := entity.User{
 		Username: input.Username,
 		Email:    input.Email,
-		Age:      input.Age,
 	}
 
-	if input.Passowrd != "" {
-		passwordHash, err := bcrypt.GenerateFromPassword([]byte(input.Passowrd), bcrypt.MinCost)
+	if input.Password != "" {
+		passwordHash, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.MinCost)
 
 		if err != nil {
 			return entity.User{}, err

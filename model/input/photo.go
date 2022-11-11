@@ -1,21 +1,21 @@
 package input
 
-type InputPhotos struct {
+type PhotoCreateInput struct {
 	Title    string `json:"title" binding:"required"`
 	Caption  string `json:"caption"`
 	PhotoURL string `json:"photo_url" binding:"required"`
 }
 
-type UpdatePhoto struct {
+type PhotoUpdateInput struct {
 	Title    string `json:"title"`
 	Caption  string `json:"caption"`
 	PhotoURL string `json:"photo_url"`
 }
 
-type UpdatePhotoIDUser struct {
+type PhotoUpdateIDUser struct {
 	ID int `uri:"id" binding:"required"`
 }
 
-type DeletePhoto struct {
+type PhotoDeleteIDUser struct {
 	ID int `uri:"id" binding:"required"`
 }
