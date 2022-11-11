@@ -104,7 +104,11 @@ func (h *photoController) DeletePhoto(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, response)
 	}
 
-	response := helper.APIResponse("ok", "success deleted photo!")
+	deleteResponse := response.PhotoDeleteResponse{
+		Message: "Your photo has been successfully deleted",
+	}
+
+	response := helper.APIResponse("ok", deleteResponse)
 	c.JSON(http.StatusOK, response)
 }
 
