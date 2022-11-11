@@ -24,7 +24,7 @@ func NewPhotoRepository(db *gorm.DB) *photoRepository {
 }
 
 func (r *photoRepository) Save(photo entity.Photo) (entity.Photo, error) {
-	err := r.db.Save(&photo).Error
+	err := r.db.Preload("User").Create(&photo).Error
 
 	if err != nil {
 		return entity.Photo{}, err
@@ -36,7 +36,7 @@ func (r *photoRepository) Save(photo entity.Photo) (entity.Photo, error) {
 func (r *photoRepository) GetAll() ([]entity.Photo, error) {
 	var photos []entity.Photo
 
-	err := r.db.Find(&photos).Error
+	err := r.db.Preload("User").Find(&photos).Error
 
 	if err != nil {
 		return []entity.Photo{}, err
