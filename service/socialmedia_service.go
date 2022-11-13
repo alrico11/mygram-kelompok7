@@ -9,7 +9,7 @@ import (
 
 type SocialMediaService interface {
 	CreateSocialMedia(input input.SocialInput, idUser int) (entity.SocialMedia, error)
-	DeleteSocialMedia(ID int) (entity.SocialMedia, error)
+	DeleteSocialMedia(id_user int, id_socialmedia int) (entity.SocialMedia, error)
 	UpdateSocialMedia(id_user int, id_socialmedia int, input input.SocialInput) (entity.SocialMedia, error)
 	GetSocialMedia(UserID int) ([]entity.SocialMedia, error)
 	GetSocialMediaByID(idSocialMedia int) (entity.SocialMedia, error)
@@ -49,18 +49,22 @@ func (s *socialmediaService) GetSocialMedia(UserID int) ([]entity.SocialMedia, e
 	return socialmedia, nil
 }
 
-func (s *socialmediaService) DeleteSocialMedia(ID int) (entity.SocialMedia, error) {
-	socialmedia, err := s.socialmediaRepository.FindByID(ID)
+func (s *socialmediaService) DeleteSocialMedia(id_user int, id_socialmedia int) (entity.SocialMedia, error) {
+	socialmedia, err := s.socialmediaRepository.FindByID(id_socialmedia)
 
 	if err != nil {
 		return entity.SocialMedia{}, err
 	}
 
 	if socialmedia.ID == 0 {
-		return entity.SocialMedia{}, nil
+		return entity.SocialMedia{}, errors.New("data not found")
 	}
 
-	socialmediaDeleted, err := s.socialmediaRepository.Delete(ID)
+	if id_user != socialmedia.UserID {
+		return entity.SocialMedia{}, errors.New("can't delete other people's social media")
+	}
+
+	socialmediaDeleted, err := s.socialmediaRepository.Delete(id_socialmedia)
 
 	if err != nil {
 		return entity.SocialMedia{}, err

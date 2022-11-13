@@ -80,7 +80,10 @@ func (h *socialmediaController) DeleteSocialmedia(c *gin.Context) {
 	err := c.ShouldBindUri(&idSocialMediaUri)
 
 	if err != nil {
-		response := helper.APIResponse("failed", err)
+		errorMessages := helper.FormatValidationError(err)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": errorMessages,
+		})
 		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 		return
 	}
@@ -93,19 +96,22 @@ func (h *socialmediaController) DeleteSocialmedia(c *gin.Context) {
 		return
 	}
 
-	_, err = h.socialmediaService.DeleteSocialMedia(idSocialMedia)
+	_, err = h.socialmediaService.DeleteSocialMedia(currentUser, idSocialMedia)
 
 	if err != nil {
-		errorMessages := helper.FormatValidationError(err)
 		response := helper.APIResponse("failed", gin.H{
-			"errors": errorMessages,
+			"errors": err.Error(),
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
-	response := helper.APIResponse("ok", "success deleted social media!")
+	responseSocialMedia := response.SocialMediaDeleteResponse{
+		Message: "Your social media has been successfully deleted",
+	}
+
+	response := helper.APIResponse("ok", responseSocialMedia)
 	c.JSON(http.StatusOK, response)
-	return
 }
 
 func (h *socialmediaController) GetSocialMedia(c *gin.Context) {
