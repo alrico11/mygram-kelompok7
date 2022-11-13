@@ -56,6 +56,7 @@ func GetAllSocialMedia(social []entity.SocialMedia, user entity.User) ([]SocialM
 			URL:       socialmedia.URL,
 			UsedID:    socialmedia.UserID,
 			CreatedAt: socialmedia.CreatedAt,
+			UpdateAt:  socialmedia.UpdatedAt,
 			User: SocialMediaUser{
 				ID:              socialmedia.User.ID,
 				Username:        socialmedia.User.Username,
