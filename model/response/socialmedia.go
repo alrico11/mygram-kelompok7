@@ -18,7 +18,7 @@ type SocialMediaUpdateResponse struct {
 	ID        int       `json:"id"`
 	Name      string    `json:"name"`
 	URL       string    `json:"social_media_url"`
-	UsedID    int       `json:"user_id"`
+	UserID    int       `json:"user_id"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
 

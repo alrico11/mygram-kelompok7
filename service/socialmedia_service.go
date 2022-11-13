@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"project2/model/entity"
 	"project2/model/input"
 	"project2/repository"
@@ -9,8 +10,9 @@ import (
 type SocialMediaService interface {
 	CreateSocialMedia(input input.SocialInput, idUser int) (entity.SocialMedia, error)
 	DeleteSocialMedia(ID int) (entity.SocialMedia, error)
-	UpdateSocialMedia(ID int, input input.SocialInput) (entity.SocialMedia, error)
+	UpdateSocialMedia(id_user int, id_socialmedia int, input input.SocialInput) (entity.SocialMedia, error)
 	GetSocialMedia(UserID int) ([]entity.SocialMedia, error)
+	GetSocialMediaByID(idSocialMedia int) (entity.SocialMedia, error)
 }
 type socialmediaService struct {
 	socialmediaRepository repository.SocialMediaRepository
@@ -67,16 +69,20 @@ func (s *socialmediaService) DeleteSocialMedia(ID int) (entity.SocialMedia, erro
 	return socialmediaDeleted, nil
 }
 
-func (s *socialmediaService) UpdateSocialMedia(ID int, input input.SocialInput) (entity.SocialMedia, error) {
+func (s *socialmediaService) UpdateSocialMedia(id_user int, id_socialmedia int, input input.SocialInput) (entity.SocialMedia, error) {
 
-	Result, err := s.socialmediaRepository.FindByID(ID)
+	Result, err := s.socialmediaRepository.FindByID(id_socialmedia)
 
 	if err != nil {
 		return entity.SocialMedia{}, err
 	}
 
 	if Result.ID == 0 {
-		return entity.SocialMedia{}, nil
+		return entity.SocialMedia{}, errors.New("data not found")
+	}
+
+	if id_user != Result.UserID {
+		return entity.SocialMedia{}, errors.New("can't update other people's social media")
 	}
 
 	updated := entity.SocialMedia{
@@ -84,11 +90,21 @@ func (s *socialmediaService) UpdateSocialMedia(ID int, input input.SocialInput) 
 		URL:  input.URL,
 	}
 
-	socialmediaUpdate, err := s.socialmediaRepository.Update(updated, ID)
+	socialmediaUpdate, err := s.socialmediaRepository.Update(updated, id_socialmedia)
 
 	if err != nil {
 		return entity.SocialMedia{}, err
 	}
 
 	return socialmediaUpdate, nil
+}
+
+func (s *socialmediaService) GetSocialMediaByID(idSocialMedia int) (entity.SocialMedia, error) {
+	socialmedia, err := s.socialmediaRepository.FindByID(idSocialMedia)
+
+	if err != nil {
+		return entity.SocialMedia{}, err
+	}
+
+	return socialmedia, nil
 }

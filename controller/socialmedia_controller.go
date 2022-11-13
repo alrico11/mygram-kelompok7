@@ -186,25 +186,33 @@ func (h *socialmediaController) UpdateSocialMedia(c *gin.Context) {
 
 	id_socialmedia := idSocialUri.ID
 
-	queryResult, err := h.socialmediaService.UpdateSocialMedia(id_socialmedia, update)
+	_, err = h.socialmediaService.UpdateSocialMedia(currentUser, id_socialmedia, update)
 
-	if queryResult.ID == 0 {
-		response := helper.APIResponse("failed", "photo not found!")
+	if err != nil {
+		response := helper.APIResponse("failed", gin.H{
+			"errors": err.Error(),
+		})
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
+	socialMediaUpdated, err := h.socialmediaService.GetSocialMediaByID(id_socialmedia)
 	if err != nil {
-		errorMessages := helper.FormatValidationError(err)
 		response := helper.APIResponse("failed", gin.H{
-			"errors": errorMessages,
+			"errors": err.Error(),
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
-	Updated, err := h.socialmediaService.GetSocialMedia(id_socialmedia)
+	responseSocialMedia := response.SocialMediaUpdateResponse{
+		ID:        socialMediaUpdated.ID,
+		Name:      socialMediaUpdated.Name,
+		URL:       socialMediaUpdated.URL,
+		UserID:    socialMediaUpdated.UserID,
+		UpdatedAt: socialMediaUpdated.UpdatedAt,
+	}
 
-	response := helper.APIResponse("ok", Updated)
+	response := helper.APIResponse("ok", responseSocialMedia)
 	c.JSON(http.StatusOK, response)
-	return
 }
