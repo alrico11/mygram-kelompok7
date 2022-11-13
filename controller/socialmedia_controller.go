@@ -118,19 +118,35 @@ func (h *socialmediaController) GetSocialMedia(c *gin.Context) {
 	}
 
 	socialmedia, err := h.socialmediaService.GetSocialMedia(currentUser)
+	if err != nil {
+		response := helper.APIResponse("failed", gin.H{
+			"errors": err.Error(),
+		})
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
 	user, err := h.userService.GetUserByID(currentUser)
 
 	if err != nil {
-		errorMessages := helper.FormatValidationError(err)
 		response := helper.APIResponse("failed", gin.H{
-			"errors": errorMessages,
+			"errors": err.Error(),
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
-	response := helper.APIResponse("ok", response.GetAllSocialMedia(socialmedia, user))
+	responseSocialMedia, err := response.GetAllSocialMedia(socialmedia, user)
+	if err != nil {
+		response := helper.APIResponse("failed", gin.H{
+			"errors": err.Error(),
+		})
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	response := helper.APIResponse("ok", responseSocialMedia)
 	c.JSON(http.StatusOK, response)
-	return
 }
 
 func (h *socialmediaController) UpdateSocialMedia(c *gin.Context) {
