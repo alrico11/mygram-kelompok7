@@ -49,7 +49,7 @@ func (h *socialmediaController) AddNewSocialMedia(c *gin.Context) {
 	if err != nil {
 		// errorMessages := helper.FormatValidationError(err)
 
-		response := helper.APIResponse("failed", err)
+		response := helper.APIResponse("failed", err.Error())
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
@@ -63,7 +63,7 @@ func (h *socialmediaController) AddNewSocialMedia(c *gin.Context) {
 	}
 
 	response := helper.APIResponse("created", newSocialMediaResponse)
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusCreated, response)
 }
 
 func (h *socialmediaController) DeleteSocialmedia(c *gin.Context) {
@@ -80,7 +80,10 @@ func (h *socialmediaController) DeleteSocialmedia(c *gin.Context) {
 	err := c.ShouldBindUri(&idSocialMediaUri)
 
 	if err != nil {
-		response := helper.APIResponse("failed", err)
+		errorMessages := helper.FormatValidationError(err)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": errorMessages,
+		})
 		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 		return
 	}
@@ -93,19 +96,22 @@ func (h *socialmediaController) DeleteSocialmedia(c *gin.Context) {
 		return
 	}
 
-	_, err = h.socialmediaService.DeleteSocialMedia(idSocialMedia)
+	_, err = h.socialmediaService.DeleteSocialMedia(currentUser, idSocialMedia)
 
 	if err != nil {
-		errorMessages := helper.FormatValidationError(err)
 		response := helper.APIResponse("failed", gin.H{
-			"errors": errorMessages,
+			"errors": err.Error(),
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
-	response := helper.APIResponse("ok", "success deleted social media!")
+	responseSocialMedia := response.SocialMediaDeleteResponse{
+		Message: "Your social media has been successfully deleted",
+	}
+
+	response := helper.APIResponse("ok", responseSocialMedia)
 	c.JSON(http.StatusOK, response)
-	return
 }
 
 func (h *socialmediaController) GetSocialMedia(c *gin.Context) {
@@ -118,19 +124,35 @@ func (h *socialmediaController) GetSocialMedia(c *gin.Context) {
 	}
 
 	socialmedia, err := h.socialmediaService.GetSocialMedia(currentUser)
+	if err != nil {
+		response := helper.APIResponse("failed", gin.H{
+			"errors": err.Error(),
+		})
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
 	user, err := h.userService.GetUserByID(currentUser)
 
 	if err != nil {
-		errorMessages := helper.FormatValidationError(err)
 		response := helper.APIResponse("failed", gin.H{
-			"errors": errorMessages,
+			"errors": err.Error(),
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
-	response := helper.APIResponse("ok", response.GetAllSocialMedia(socialmedia, user))
+	responseSocialMedia, err := response.GetAllSocialMedia(socialmedia, user)
+	if err != nil {
+		response := helper.APIResponse("failed", gin.H{
+			"errors": err.Error(),
+		})
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	response := helper.APIResponse("ok", responseSocialMedia)
 	c.JSON(http.StatusOK, response)
-	return
 }
 
 func (h *socialmediaController) UpdateSocialMedia(c *gin.Context) {
@@ -170,25 +192,33 @@ func (h *socialmediaController) UpdateSocialMedia(c *gin.Context) {
 
 	id_socialmedia := idSocialUri.ID
 
-	queryResult, err := h.socialmediaService.UpdateSocialMedia(id_socialmedia, update)
+	_, err = h.socialmediaService.UpdateSocialMedia(currentUser, id_socialmedia, update)
 
-	if queryResult.ID == 0 {
-		response := helper.APIResponse("failed", "photo not found!")
+	if err != nil {
+		response := helper.APIResponse("failed", gin.H{
+			"errors": err.Error(),
+		})
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
+	socialMediaUpdated, err := h.socialmediaService.GetSocialMediaByID(id_socialmedia)
 	if err != nil {
-		errorMessages := helper.FormatValidationError(err)
 		response := helper.APIResponse("failed", gin.H{
-			"errors": errorMessages,
+			"errors": err.Error(),
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
-	Updated, err := h.socialmediaService.GetSocialMedia(id_socialmedia)
+	responseSocialMedia := response.SocialMediaUpdateResponse{
+		ID:        socialMediaUpdated.ID,
+		Name:      socialMediaUpdated.Name,
+		URL:       socialMediaUpdated.URL,
+		UserID:    socialMediaUpdated.UserID,
+		UpdatedAt: socialMediaUpdated.UpdatedAt,
+	}
 
-	response := helper.APIResponse("ok", Updated)
+	response := helper.APIResponse("ok", responseSocialMedia)
 	c.JSON(http.StatusOK, response)
-	return
 }

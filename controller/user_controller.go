@@ -40,7 +40,7 @@ func (h *userController) RegisterUser(c *gin.Context) {
 	user, err := h.userService.CreateUser(input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"Errors": err,
+			"Errors": err.Error(),
 		})
 		return
 	}
@@ -102,12 +102,9 @@ func (h *userController) Login(c *gin.Context) {
 	user, err := h.userService.GetUserByEmail(input.Email)
 
 	if err != nil {
-		errors := helper.FormatValidationError(err)
-		errorMessages := gin.H{
-			"errors": errors,
-		}
-
-		response := helper.APIResponse("failed", errorMessages)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": err.Error(),
+		})
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
@@ -165,9 +162,8 @@ func (h *userController) UpdateUser(c *gin.Context) {
 	_, err = h.userService.UpdateUser(currentUser, inputUserUpdate)
 
 	if err != nil {
-		errorMessages := helper.FormatValidationError(err)
 		response := helper.APIResponse("failed", gin.H{
-			"errors": errorMessages,
+			"errors": err.Error(),
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
@@ -198,11 +194,11 @@ func (h *userController) DeleteUser(c *gin.Context) {
 	_, err := h.userService.DeleteUser(currentUser)
 
 	if err != nil {
-		errorMessages := helper.FormatValidationError(err)
 		response := helper.APIResponse("failed", gin.H{
-			"errors": errorMessages,
+			"errors": err.Error(),
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
 	deleteResponse := response.UserDeleteResponse{

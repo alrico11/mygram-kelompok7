@@ -94,7 +94,7 @@ func (s *photoService) GetPhotoByID(idPhoto int) (entity.Photo, error) {
 	}
 
 	if photoQuery.ID == 0 {
-		return entity.Photo{}, nil
+		return entity.Photo{}, errors.New("photo not found")
 	}
 
 	return photoQuery, nil

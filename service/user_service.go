@@ -76,7 +76,7 @@ func (s *userService) GetUserByEmail(email string) (entity.User, error) {
 	}
 
 	if user.ID == 0 {
-		return entity.User{}, nil
+		return entity.User{}, errors.New("user not found")
 	}
 
 	return user, nil
@@ -90,7 +90,7 @@ func (s *userService) GetUserByID(ID int) (entity.User, error) {
 	}
 
 	if user.ID == 0 {
-		return entity.User{}, nil
+		return entity.User{}, errors.New("user not found")
 	}
 
 	return user, nil
@@ -104,7 +104,7 @@ func (s *userService) UpdateUser(ID int, input input.UserUpdateInput) (entity.Us
 	}
 
 	if userResult.ID == 0 {
-		return entity.User{}, errors.New("user not found!")
+		return entity.User{}, errors.New("user not found")
 	}
 
 	updatedUser := entity.User{
@@ -139,7 +139,7 @@ func (s *userService) DeleteUser(ID int) (entity.User, error) {
 	}
 
 	if userQuery.ID == 0 {
-		return entity.User{}, nil
+		return entity.User{}, errors.New("user not found")
 	}
 
 	userDeleted, err := s.userRepository.Delete(ID)
