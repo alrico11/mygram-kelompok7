@@ -78,7 +78,10 @@ func (h *commentController) DeleteComment(c *gin.Context) {
 	err := c.ShouldBindUri(&idCommentUri)
 
 	if err != nil {
-		response := helper.APIResponse("failed", err)
+		errorMessages := helper.FormatValidationError(err)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": errorMessages,
+		})
 		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 		return
 	}
@@ -91,17 +94,21 @@ func (h *commentController) DeleteComment(c *gin.Context) {
 		return
 	}
 
-	_, err = h.commentService.DeleteComment(idComment)
+	_, err = h.commentService.DeleteComment(currentUser, idComment)
 
 	if err != nil {
-		errorMessages := helper.FormatValidationError(err)
 		response := helper.APIResponse("failed", gin.H{
-			"errors": errorMessages,
+			"errors": err.Error(),
 		})
 		c.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
-	response := helper.APIResponse("ok", "success deleted comment!")
+	responseComment := response.CommentDeleteResponse{
+		Message: "Your comment has been successfully deleted",
+	}
+
+	response := helper.APIResponse("ok", responseComment)
 	c.JSON(http.StatusOK, response)
 }
 
