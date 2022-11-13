@@ -10,10 +10,10 @@ import (
 	"gorm.io/gorm"
 )
 
-func InitDB() *gorm.DB {
+func InitDB(username, password, host, port, dbName string) *gorm.DB {
 
 	// read db
-	dsnString := "root:@tcp(127.0.0.1:3306)/db_belajar_golang?charset=utf8mb4&parseTime=True&loc=Local"
+	dsnString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, port, dbName)
 
 	db, err := gorm.Open(mysql.Open(dsnString), &gorm.Config{})
 	if err != nil {
