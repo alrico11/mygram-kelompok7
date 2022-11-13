@@ -16,7 +16,7 @@ type CommentService interface {
 	CreateComment(input input.CommentInput, idUser int) (entity.Comment, error)
 	GetComment(UserID int) ([]entity.Comment, error)
 	DeleteComment(ID int) (entity.Comment, error)
-	UpdateComment(ID int, input input.CommentUpdateInput) (entity.Comment, error)
+	UpdateComment(id_user int, id_comment int, input input.CommentUpdateInput) (entity.Comment, error)
 	GetCommentByID(commentID int) (entity.Comment, error)
 	GetCommentsByPhotoID(photoID int) ([]entity.Comment, error)
 }
@@ -79,23 +79,27 @@ func (s *commentService) DeleteComment(ID int) (entity.Comment, error) {
 	return Deleted, nil
 }
 
-func (s *commentService) UpdateComment(ID int, input input.CommentUpdateInput) (entity.Comment, error) {
+func (s *commentService) UpdateComment(id_user int, id_comment int, input input.CommentUpdateInput) (entity.Comment, error) {
 
-	Result, err := s.commentRepository.FindByID(ID)
+	Result, err := s.commentRepository.FindByID(id_comment)
 
 	if err != nil {
 		return entity.Comment{}, err
 	}
 
 	if Result.ID == 0 {
-		return entity.Comment{}, nil
+		return entity.Comment{}, errors.New("comment not found")
+	}
+
+	if id_user != Result.UserID{
+		return entity.Comment{}, errors.New("can't update other people's comment")
 	}
 
 	updated := entity.Comment{
 		Message: input.Message,
 	}
 
-	commentUpdate, err := s.commentRepository.Update(updated, ID)
+	commentUpdate, err := s.commentRepository.Update(updated, id_comment)
 
 	if err != nil {
 		return entity.Comment{}, err

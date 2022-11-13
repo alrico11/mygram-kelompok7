@@ -39,22 +39,34 @@ type CommentPhoto struct {
 }
 
 func GetAllComment(comment entity.Comment, photo entity.Photo) GetCommentResponse {
-	var response GetCommentResponse
-
-	response.ID = comment.ID
-	response.Message = comment.Message
-	response.PhotoID = comment.PhotoID
-	response.CreatedAt = comment.CreatedAt
-	// response.Photo = photo
+	response := GetCommentResponse{
+		ID:        comment.ID,
+		Message:   comment.Message,
+		PhotoID:   comment.PhotoID,
+		UserID:    comment.UserID,
+		UpdatedAt: comment.UpdatedAt,
+		CreatedAt: comment.CreatedAt,
+		User: CommentUser{
+			ID:       comment.User.ID,
+			Email:    comment.User.Email,
+			Username: comment.User.Username,
+		},
+		Photo: CommentPhoto{
+			ID:       comment.Photo.ID,
+			Title:    comment.Photo.Title,
+			Caption:  comment.Photo.Caption,
+			PhotoURL: comment.Photo.PhotoURL,
+			UserID:   comment.Photo.UserID,
+		},
+	}
 
 	return response
 }
 
 type CommentUpdateResponse struct {
 	ID        int       `json:"id"`
-	Title     string    `json:"title"`
-	Caption   string    `json:"caption"`
-	PhotoURL  string    `json:"photo_url"`
+	Message   string    `json:"message"`
+	PhotoID   int       `json:"photo_id"`
 	UserID    int       `json:"user_id"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
