@@ -22,12 +22,12 @@ func main() {
 	userService := service.NewUserService(userRepository)
 	userController := controller.NewUserController(userService)
 
-	commentRepository := repository.NewCommentRepository(db)
-	commentService := service.NewCommentService(commentRepository)
-
 	photoRepository := repository.NewPhotoRepository(db)
 	photoService := service.NewPhotoService(photoRepository)
-	photoController := controller.NewPhotoController(photoService, commentService, userService)
+	photoController := controller.NewPhotoController(photoService, userService)
+
+	commentRepository := repository.NewCommentRepository(db)
+	commentService := service.NewCommentService(commentRepository, photoRepository)
 	commentController := controller.NewCommentController(commentService, photoService)
 
 	socialmediaRepository := repository.NewSocialMediaRepository(db)

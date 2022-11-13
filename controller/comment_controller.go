@@ -33,10 +33,11 @@ func (h *commentController) AddNewComment(c *gin.Context) {
 	err := c.ShouldBindJSON(&input)
 
 	if err != nil {
-		errorsMessage := helper.FormatValidationError(err)
-
-		response := helper.APIResponse("failed", errorsMessage)
-		c.JSON(http.StatusUnprocessableEntity, response)
+		errorMessages := helper.FormatValidationError(err)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": errorMessages,
+		})
+		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 		return
 	}
 
@@ -44,21 +45,23 @@ func (h *commentController) AddNewComment(c *gin.Context) {
 	newComment, err := h.commentService.CreateComment(input, currentUser)
 
 	if err != nil {
-
-		response := helper.APIResponse("failed", err)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": err.Error(),
+		})
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
 	newCommentResponse := response.CreateCommentResponse{
-		ID:      newComment.ID,
-		Message: newComment.Message,
-		PhotoID: input.PhotoID,
-		UserID:  currentUser,
+		ID:        newComment.ID,
+		Message:   newComment.Message,
+		PhotoID:   newComment.PhotoID,
+		UserID:    newComment.UserID,
+		CreatedAt: newComment.CreatedAt,
 	}
 
 	response := helper.APIResponse("created", newCommentResponse)
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusCreated, response)
 }
 
 func (h *commentController) DeleteComment(c *gin.Context) {

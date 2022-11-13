@@ -20,7 +20,22 @@ type GetCommentResponse struct {
 	UserID    int          `json:"user_id"`
 	UpdatedAt time.Time    `json:"updated_at"`
 	CreatedAt time.Time    `json:"created_at"`
-	Photo     entity.Photo `json:"Photo"`
+	User      CommentUser  `json:"User"`
+	Photo     CommentPhoto `json:"Photo"`
+}
+
+type CommentUser struct {
+	ID       int    `json:"id"`
+	Email    string `json:"email"`
+	Username string `json:"username"`
+}
+
+type CommentPhoto struct {
+	ID       int    `json:"id"`
+	Title    string `json:"title"`
+	Caption  string `json:"caption"`
+	PhotoURL string `json:"photo_url"`
+	UserID   int    `json:"user_id"`
 }
 
 func GetAllComment(comment entity.Comment, photo entity.Photo) GetCommentResponse {
@@ -30,7 +45,7 @@ func GetAllComment(comment entity.Comment, photo entity.Photo) GetCommentRespons
 	response.Message = comment.Message
 	response.PhotoID = comment.PhotoID
 	response.CreatedAt = comment.CreatedAt
-	response.Photo = photo
+	// response.Photo = photo
 
 	return response
 }

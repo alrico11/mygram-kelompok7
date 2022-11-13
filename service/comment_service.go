@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"project2/model/entity"
 	"project2/model/input"
 	"project2/repository"
@@ -8,6 +9,7 @@ import (
 
 type commentService struct {
 	commentRepository repository.CommentRepository
+	photoRepository   repository.PhotoRepository
 }
 
 type CommentService interface {
@@ -19,11 +21,20 @@ type CommentService interface {
 	GetCommentsByPhotoID(photoID int) ([]entity.Comment, error)
 }
 
-func NewCommentService(commentRepository repository.CommentRepository) *commentService {
-	return &commentService{commentRepository}
+func NewCommentService(commentRepository repository.CommentRepository, photoRepository repository.PhotoRepository) *commentService {
+	return &commentService{commentRepository, photoRepository}
 }
 
 func (s *commentService) CreateComment(input input.CommentInput, idUser int) (entity.Comment, error) {
+	photoData, err := s.photoRepository.FindByID(input.PhotoID)
+
+	if err != nil {
+		return entity.Comment{}, err
+	}
+	if photoData.ID == 0 {
+		return entity.Comment{}, errors.New("photo not found")
+	}
+
 	newComment := entity.Comment{
 		Message: input.Message,
 		PhotoID: input.PhotoID,

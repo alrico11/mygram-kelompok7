@@ -11,13 +11,12 @@ import (
 )
 
 type photoController struct {
-	photoService   service.PhotoService
-	commentService service.CommentService
-	userService    service.UserService
+	photoService service.PhotoService
+	userService  service.UserService
 }
 
-func NewPhotoController(photoService service.PhotoService, commentService service.CommentService, userService service.UserService) *photoController {
-	return &photoController{photoService, commentService, userService}
+func NewPhotoController(photoService service.PhotoService, userService service.UserService) *photoController {
+	return &photoController{photoService, userService}
 }
 
 func (h *photoController) AddNewPhoto(c *gin.Context) {
