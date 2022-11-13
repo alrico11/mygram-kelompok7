@@ -49,7 +49,7 @@ func (h *socialmediaController) AddNewSocialMedia(c *gin.Context) {
 	if err != nil {
 		// errorMessages := helper.FormatValidationError(err)
 
-		response := helper.APIResponse("failed", err)
+		response := helper.APIResponse("failed", err.Error())
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
@@ -63,7 +63,7 @@ func (h *socialmediaController) AddNewSocialMedia(c *gin.Context) {
 	}
 
 	response := helper.APIResponse("created", newSocialMediaResponse)
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusCreated, response)
 }
 
 func (h *socialmediaController) DeleteSocialmedia(c *gin.Context) {
