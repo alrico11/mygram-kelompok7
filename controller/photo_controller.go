@@ -34,13 +34,11 @@ func (h *photoController) AddNewPhoto(c *gin.Context) {
 	err := c.ShouldBindJSON(&input)
 
 	if err != nil {
-		errors := helper.FormatValidationError(err)
-		errorMessages := gin.H{
-			"errors": errors,
-		}
-
-		response := helper.APIResponse("failed", errorMessages)
-		c.JSON(http.StatusUnprocessableEntity, response)
+		errorMessages := helper.FormatValidationError(err)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": errorMessages,
+		})
+		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 		return
 	}
 
@@ -81,7 +79,10 @@ func (h *photoController) DeletePhoto(c *gin.Context) {
 	err := c.ShouldBindUri(&idPhotoUri)
 
 	if err != nil {
-		response := helper.APIResponse("failed", err.Error())
+		errorMessages := helper.FormatValidationError(err)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": errorMessages,
+		})
 		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 		return
 	}
