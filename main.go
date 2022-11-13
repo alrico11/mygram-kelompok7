@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"project2/config"
 	"project2/controller"
 	"project2/middleware"
@@ -8,15 +9,20 @@ import (
 	"project2/service"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	fmt.Println("Error loading .env file")
-	// }
+	_ = godotenv.Load()
 
-	db := config.InitDB()
+	port := os.Getenv("PORT")
+	dbUsername := os.Getenv("DATABASE_USERNAME")
+	dbPassword := os.Getenv("DATABASE_PASSWORD")
+	dbHost := os.Getenv("DATABASE_HOST")
+	dbPort := os.Getenv("DATABASE_PORT")
+	dbName := os.Getenv("DATABASE_NAME")
+
+	db := config.InitDB(dbUsername, dbPassword, dbHost, dbPort, dbName)
 
 	userRepository := repository.NewUserRepository(db)
 	userService := service.NewUserService(userRepository)
@@ -63,5 +69,5 @@ func main() {
 
 	// router.Run(":" + os.Getenv("PORT"))
 
-	router.Run(":8080")
+	router.Run(":" + port)
 }
