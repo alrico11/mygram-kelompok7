@@ -15,27 +15,27 @@ $ go run main.go
 
 # Endpoint
 ## User
-POST	- http://localhost:8080/users/register	- Create User Account
-POST	- http://localhost:8080/users/login	- Login User
-PUT	- http://localhost:8080/users/		- Update Data User
-DELETE	- http://localhost:8080/users/		- Delete User Account
+POST	- http://localhost:8080/users/register	        - Create User Account
+POST	- http://localhost:8080/users/login	            - Login User
+PUT	    - http://localhost:8080/users/		            - Update Data User
+DELETE	- http://localhost:8080/users/		            - Delete User Account
 
 ## Photos
-POST	- http://localhost:8080/photos/		- Post a Photo
-GET	- http://localhost:8080/photos/		- Get All Photo
-PUT	- http://localhost:8080/photos/:photoId	- Update Photo Posted
-DELETE	- http://localhost:8080/photos/:photoId	- Delete Photo Posted
+POST	- http://localhost:8080/photos/		            - Post a Photo
+GET	    - http://localhost:8080/photos/		            - Get All Photo
+PUT	    - http://localhost:8080/photos/:photoId	        - Update Photo Posted
+DELETE	- http://localhost:8080/photos/:photoId	        - Delete Photo Posted
 
 ## Comments
-POST	- http://localhost:8080/comments/		- Post a Comment
-GET	- http://localhost:8080/comments/		- Get Comment User
-PUT	- http://localhost:8080/comments/:commentId	- Update User Comment Posted
-DELETE	- http://localhost:8080/comments/:commentId	- Delete User Comment Posted
+POST	- http://localhost:8080/comments/		        - Post a Comment
+GET	    - http://localhost:8080/comments/		        - Get Comment User
+PUT	    - http://localhost:8080/comments/:commentId	    - Update User Comment Posted
+DELETE	- http://localhost:8080/comments/:commentId	    - Delete User Comment Posted
 
 ## Social Media
-POST	- http://localhost:8080/socialmedias/			- Post a Social Media info
-GET	- http://localhost:8080/socialmedias/			- Get User Social Media
-PUT	- http://localhost:8080/socialmedias/:socialMediaId	- Update Social Media info User
+POST	- http://localhost:8080/socialmedias/			    - Post a Social Media info
+GET	    - http://localhost:8080/socialmedias/			    - Get User Social Media
+PUT	    - http://localhost:8080/socialmedias/:socialMediaId	- Update Social Media info User
 DELETE	- http://localhost:8080/socialmedias/:socialMediaId	- Delete Social Media info User
 
 # Group 7
