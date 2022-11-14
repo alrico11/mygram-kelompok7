@@ -5,7 +5,7 @@ import (
 )
 
 type UserRegisterResponse struct {
-	ID       int `json:"id"`,`gorm:"primaryKey;autoIncrement;unique"`
+	ID       int `json:"id,gorm:"primaryKey;autoIncrement;unique"`
 	Age      int    `json:"age"`
 	Email    string `json:"email"`
 	Username string `json:"username"`
