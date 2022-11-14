@@ -2,7 +2,6 @@ package response
 
 import (
 	"time"
-    	"github.com/jinzhu/gorm"
 )
 
 type UserRegisterResponse struct {
