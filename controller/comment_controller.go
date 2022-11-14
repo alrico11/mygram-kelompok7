@@ -19,6 +19,7 @@ func NewCommentController(commentService service.CommentService, photoService se
 	return &commentController{commentService, photoService}
 }
 
+// Post New Comment
 func (h *commentController) AddNewComment(c *gin.Context) {
 	var input input.CommentInput
 
@@ -41,7 +42,7 @@ func (h *commentController) AddNewComment(c *gin.Context) {
 		return
 	}
 
-	// send to service
+	// Send To Service
 	newComment, err := h.commentService.CreateComment(input, currentUser)
 
 	if err != nil {
@@ -64,6 +65,7 @@ func (h *commentController) AddNewComment(c *gin.Context) {
 	c.JSON(http.StatusCreated, response)
 }
 
+// Delete Comment by id
 func (h *commentController) DeleteComment(c *gin.Context) {
 	currentUser := c.MustGet("currentUser").(int)
 
@@ -112,6 +114,7 @@ func (h *commentController) DeleteComment(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// Get Comment All Comment
 func (h *commentController) GetComment(c *gin.Context) {
 	currentUser := c.MustGet("currentUser").(int)
 
@@ -120,19 +123,6 @@ func (h *commentController) GetComment(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 		return
 	}
-
-	// var idPhotoUri input.UpdatePhotoIDUser
-
-	// err := c.ShouldBindUri(&idPhotoUri)
-
-	// if err != nil {
-	// 	errorMessages := helper.FormatValidationError(err)
-	// 	response := helper.APIResponse("failed", gin.H{
-	// 		"errors": errorMessages,
-	// 	})
-	// 	c.AbortWithStatusJSON(http.StatusUnauthorized, response)
-	// 	return
-	// }
 
 	comments, err := h.commentService.GetComment(currentUser)
 	if err != nil {
@@ -143,7 +133,7 @@ func (h *commentController) GetComment(c *gin.Context) {
 		return
 	}
 
-	// query photo
+	// Query Photo
 	var allCommentsPhoto []response.GetCommentResponse
 	for _, item := range comments {
 		photo, _ := h.photoService.GetPhotoByID(item.PhotoID)
@@ -154,19 +144,9 @@ func (h *commentController) GetComment(c *gin.Context) {
 
 	response := helper.APIResponse("ok", allCommentsPhoto)
 	c.JSON(http.StatusOK, response)
-
-	// if err != nil {
-	// 	errorMessages := helper.FormatValidationError(err)
-	// 	response := helper.APIResponse("failed", gin.H{
-	// 		"errors": errorMessages,
-	// 	})
-	// 	c.JSON(http.StatusUnprocessableEntity, response)
-	// }
-
-	// response := helper.APIResponse("ok", response.GetAllComment(comment, photo))
-	// c.JSON(http.StatusOK, response)
 }
 
+// Edit/Update Comment (message) by id
 func (h *commentController) UpdateComment(c *gin.Context) {
 	currentUser := c.MustGet("currentUser").(int)
 
