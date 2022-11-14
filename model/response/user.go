@@ -2,10 +2,11 @@ package response
 
 import (
 	"time"
-    "github.com/jinzhu/gorm"
+    	"github.com/jinzhu/gorm"
 )
+
 type UserRegisterResponse struct {
-	ID       int    `json:"id" sql:"AUTO_INCREMENT" gorm:"primary_key"`
+	ID       int    `json:"id"gorm:"primary_key;auto_increment;not_null"`
 	Age      int    `json:"age"`
 	Email    string `json:"email"`
 	Username string `json:"username"`
