@@ -1,33 +1,45 @@
 package controller
 
+type socialMediaController struct {
 import (
-	"fmt"
 	"net/http"
 	"project2/helper"
-	"project2/middleware"
-	"project2/model/entity"
 	"project2/model/input"
 	"project2/model/response"
 	"project2/service"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator"
-	"golang.org/x/crypto/bcrypt"
 )
 
-@@ -26,37 +29,47 @@ func (h *userController) RegisterUser(c *gin.Context) {
+type socialmediaController struct {
+	socialmediaService service.SocialMediaService
+	userService        service.UserService
+}
+
+func NewSocialMediaController() {
+	return &socialMediaController
+func NewSocialMediaController(socialmediaService service.SocialMediaService, userService service.UserService) *socialmediaController {
+	return &socialmediaController{socialmediaService, userService}
+}
+
+func AddNewSosicalMedia() {
+func (h *socialmediaController) AddNewSocialMedia(c *gin.Context) {
+	var input input.SocialInput
+
+	currentUser := c.MustGet("currentUser").(int)
+
+	if currentUser == 0 {
+		response := helper.APIResponse("failed", "unauthorized user")
+		c.JSON(http.StatusUnauthorized, response)
+		return
+	}
+
 	err := c.ShouldBindJSON(&input)
 
 	if err != nil {
 		errors := helper.FormatValidationError(err)
 		errorMessages := gin.H{
 			"errors": errors,
-		// log.Fatal(err)
-		for _, e := range err.(validator.ValidationErrors) {
-			errorMessage := fmt.Sprintf("Error On Filled %s, condition: %s", e.Field(), e.ActualTag())
-			c.JSON(http.StatusBadRequest, errorMessage)
-			fmt.Println(err)
-			return
 		}
 
 		response := helper.APIResponse("failed", errorMessages)
@@ -36,92 +48,154 @@ import (
 	}
 
 	// send to service
-	newUser, err := h.userService.CreateUser(input)
+	newSocialMedia, err := h.socialmediaService.CreateSocialMedia(input, currentUser)
 
-	user, err := h.userService.CreateUser(input)
 	if err != nil {
+		// errorMessages := helper.FormatValidationError(err)
+
 		response := helper.APIResponse("failed", err)
 		c.JSON(http.StatusUnprocessableEntity, response)
-		c.JSON(http.StatusBadRequest, gin.H{
-			"Errors": err,
-		})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": convertToUserResponse(user),
-	})
 
-	newUserResponse := response.UserRegisterResponse{
-		ID:        newUser.ID,
-		Age:       newUser.Age,
-		Email:     newUser.Email,
-		Password:  newUser.Password,
-		Username:  newUser.Username,
-		CreatedAt: newUser.CreatedAt,
+	newSocialMediaResponse := response.SocialMediaCreateResponse{
+		ID:        newSocialMedia.ID,
+		Name:      newSocialMedia.Name,
+		URL:       newSocialMedia.URL,
+		UsedID:    newSocialMedia.UserID,
+		CreatedAt: newSocialMedia.CreatedAt,
 	}
 
-	response := helper.APIResponse("created", newUserResponse)
+	response := helper.APIResponse("created", newSocialMediaResponse)
 	c.JSON(http.StatusOK, response)
-	return
-	// // send to service
-	// newUser, err := h.userService.CreateUser(input)
-
-	// if err != nil {
-	// 	response := helper.APIResponse("failed", err)
-	// 	c.JSON(http.StatusUnprocessableEntity, response)
-	// 	return
-	// }
-
-	// newUserResponse := response.UserRegisterResponse{
-	// 	ID:        newUser.ID,
-	// 	Age:       newUser.Age,
-	// 	Email:     newUser.Email,
-	// 	Password:  newUser.Password,
-	// 	Username:  newUser.Username,
-	// 	CreatedAt: newUser.CreatedAt,
-	// }
-
-	// response := helper.APIResponse("created", newUserResponse)
-	// c.JSON(http.StatusOK, response)
-	// return
 }
 
-func (h *userController) Login(c *gin.Context) {
-@@ -106,11 +119,11 @@ func (h *userController) Login(c *gin.Context) {
+func DeleteSocialMedia() {
+func (h *socialmediaController) DeleteSocialmedia(c *gin.Context) {
+	currentUser := c.MustGet("currentUser").(int)
+
+	if currentUser == 0 {
+		response := helper.APIResponse("failed", "unauthorized user")
+		c.JSON(http.StatusUnauthorized, response)
 		return
 	}
 
-	// lets create token!
-	// crete token
-	jwtService := middleware.NewService()
-	token, err := jwtService.GenerateToken(user.ID)
+	var idSocialMediaUri input.DeleteSocialMedia
 
-	// return the token!
-	// return token
-	response := helper.APIResponse("ok", gin.H{
-		"token": token,
-	})
-@@ -163,7 +176,7 @@ func (h *userController) DeleteUser(c *gin.Context) {
+	err := c.ShouldBindUri(&idSocialMediaUri)
+
+	if err != nil {
+		response := helper.APIResponse("failed", err)
+		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+		return
+	}
+
+	idSocialMedia := idSocialMediaUri.ID
+
+	if idSocialMedia == 0 {
+		response := helper.APIResponse("failed", "id must be exist!")
+		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+		return
+	}
+
+	_, err = h.socialmediaService.DeleteSocialMedia(idSocialMedia)
+
+	if err != nil {
+		errorMessages := helper.FormatValidationError(err)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": errorMessages,
+		})
 		c.JSON(http.StatusUnprocessableEntity, response)
 	}
 
-	response := helper.APIResponse("ok", "success deleted user!")
-	response := helper.APIResponse("ok", "Success deleted user!")
+	response := helper.APIResponse("ok", "success deleted social media!")
 	c.JSON(http.StatusOK, response)
 	return
 }
-@@ -178,4 +191,14 @@ func (h *userController) TestUser(c *gin.Context) {
 
-	c.JSON(http.StatusOK, helper.APIResponse("created", id_user))
+func GetSocialMedia() {
+func (h *socialmediaController) GetSocialMedia(c *gin.Context) {
+	currentUser := c.MustGet("currentUser").(int)
+
+	if currentUser == 0 {
+		response := helper.APIResponse("failed", "id must be exist!")
+		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+		return
+	}
+
+	socialmedia, err := h.socialmediaService.GetSocialMedia(currentUser)
+	user, err := h.userService.GetUserByID(currentUser)
+
+	if err != nil {
+		errorMessages := helper.FormatValidationError(err)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": errorMessages,
+		})
+		c.JSON(http.StatusUnprocessableEntity, response)
+	}
+
+	response := helper.APIResponse("ok", response.GetAllSocialMedia(socialmedia, user))
+	c.JSON(http.StatusOK, response)
 	return
-
 }
 
-func convertToUserResponse(u entity.User) response.UserRegisterResponse {
-	return response.UserRegisterResponse{
-		Age:      u.Age,
-		Email:    u.Email,
-		Password: u.Password,
-		Username: u.Username,
+func UpdateSocialMedia() {
+func (h *socialmediaController) UpdateSocialMedia(c *gin.Context) {
+	currentUser := c.MustGet("currentUser").(int)
+
+	if currentUser == 0 {
+		response := helper.APIResponse("failed", "id must be exist!")
+		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+		return
 	}
+
+	update := input.SocialInput{}
+
+	err := c.ShouldBindJSON(&update)
+
+	if err != nil {
+		errorMessages := helper.FormatValidationError(err)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": errorMessages,
+		})
+		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+		return
+	}
+
+	var idSocialUri input.UpdateSocialMedia
+
+	err = c.ShouldBindUri(&idSocialUri)
+
+	if err != nil {
+		errorMessages := helper.FormatValidationError(err)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": errorMessages,
+		})
+		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+		return
+	}
+
+	id_socialmedia := idSocialUri.ID
+
+	queryResult, err := h.socialmediaService.UpdateSocialMedia(id_socialmedia, update)
+
+	if queryResult.ID == 0 {
+		response := helper.APIResponse("failed", "photo not found!")
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if err != nil {
+		errorMessages := helper.FormatValidationError(err)
+		response := helper.APIResponse("failed", gin.H{
+			"errors": errorMessages,
+		})
+		c.JSON(http.StatusUnprocessableEntity, response)
+	}
+
+	Updated, err := h.socialmediaService.GetSocialMedia(id_socialmedia)
+
+	response := helper.APIResponse("ok", Updated)
+	c.JSON(http.StatusOK, response)
+	return
 }
