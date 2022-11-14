@@ -3,7 +3,7 @@ package response
 import "time"
 
 type UserRegisterResponse struct {
-	ID       int    `json:"id"`
+	ID       int    `json:"id" sql:"AUTO_INCREMENT" gorm:"primary_key"`
 	Age      int    `json:"age"`
 	Email    string `json:"email"`
 	Username string `json:"username"`
