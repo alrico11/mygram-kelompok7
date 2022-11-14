@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"project2/model/entity"
 	"os"
 	"gorm.io/driver/mysql"
 
@@ -28,10 +27,6 @@ func InitDB() *gorm.DB {
 		fmt.Println(dsnString)
 		panic(err.Error())
 	}
-	db.AutoMigrate(&entity.User{})
-	db.AutoMigrate(&entity.Comment{})
-	db.AutoMigrate(&entity.Photo{})
-	db.AutoMigrate(&entity.SocialMedia{})
 
 	return db
 }
