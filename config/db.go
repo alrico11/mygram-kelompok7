@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"project2/model/entity"
 
 	"gorm.io/driver/mysql"
