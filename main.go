@@ -7,6 +7,7 @@ import (
 	"project2/middleware"
 	"project2/repository"
 	"project2/service"
+	"project2/model/entity"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
