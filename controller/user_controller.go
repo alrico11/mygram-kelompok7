@@ -15,7 +15,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-@@ -26,37 +29,47 @@ func (h *userController) RegisterUser(c *gin.Context) {
+func (h *userController) RegisterUser(c *gin.Context) {
 	err := c.ShouldBindJSON(&input)
 
 	if err != nil {
@@ -101,7 +101,7 @@ func (h *userController) Login(c *gin.Context) {
 	response := helper.APIResponse("ok", gin.H{
 		"token": token,
 	})
-@@ -163,7 +176,7 @@ func (h *userController) DeleteUser(c *gin.Context) {
+func (h *userController) DeleteUser(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, response)
 	}
 
@@ -110,7 +110,7 @@ func (h *userController) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 	return
 }
-@@ -178,4 +191,14 @@ func (h *userController) TestUser(c *gin.Context) {
+func (h *userController) TestUser(c *gin.Context) {
 
 	c.JSON(http.StatusOK, helper.APIResponse("created", id_user))
 	return
