@@ -5,12 +5,12 @@ import (
 )
 
 type Comment struct {
-	ID        int       `json:"id"`
-	UserID    int       `json:"user_id"`
-	PhotoID   int       `json:"photo_id"`
-	Message   string    `json:"message"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        int      
+	UserID    int      
+	PhotoID   int  
+	Message   string  
+	CreatedAt time.Time 
+	UpdatedAt time.Time
 	User      User
 	Photo     Photo
 }
