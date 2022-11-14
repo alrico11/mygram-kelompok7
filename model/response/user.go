@@ -1,6 +1,7 @@
 package response
 
 import "time"
+import "github.com/jinzhu/gorm"
 
 type UserRegisterResponse struct {
 	ID       int    `json:"id" sql:"AUTO_INCREMENT" gorm:"primary_key"`
