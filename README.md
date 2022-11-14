@@ -8,12 +8,14 @@ Edit .env first to sql configuration and server port
 
 Create a "db_belajar_golang" database
 
-```sh
-$ git clone https://github.com/alrico11/Final-Project-2-Hacktiv8-KampusMerdeka.git
-
-$ cd Final-Project-2-Hacktiv8-KampusMerdeka
-
-$ go run main.go
+```
+git clone https://github.com/alrico11/Final-Project-2-Hacktiv8-KampusMerdeka.git
+```
+```
+cd Final-Project-2-Hacktiv8-KampusMerdeka
+```
+```
+go run main.go
 ```
 
 # Endpoint
