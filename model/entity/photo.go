@@ -5,7 +5,7 @@ import (
 )
 
 type Photo struct {
-	ID        int `gorm:"primarykey"`
+	ID        int
 	Title     string
 	Caption   string 
 	PhotoURL  string
