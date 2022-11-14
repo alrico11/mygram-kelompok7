@@ -8,12 +8,12 @@ import (
 )
 
 type PhotoService interface {
-	CreatePhoto(photoInput input.PhotoCreateInput, IdUser int) (entity.Photo, error)
-	DeletePhoto(idPhoto int, IdUser int) (entity.Photo, error)
+	CreatePhoto(photoInput input.PhotoCreateInput, idUser int) (entity.Photo, error)
+	DeletePhoto(idPhoto int, idUser int) (entity.Photo, error)
 	GetPhotosAll() ([]entity.Photo, error)
-	GetPhotosUser(IdUser int) ([]entity.Photo, error)
+	GetPhotosUser(idUser int) ([]entity.Photo, error)
 	GetPhotoByID(idPhoto int) (entity.Photo, error)
-	UpdatePhoto(IdUser int, idPhoto int, input input.PhotoUpdateInput) (entity.Photo, error)
+	UpdatePhoto(idUser int, idPhoto int, input input.PhotoUpdateInput) (entity.Photo, error)
 }
 
 type photoService struct {
@@ -24,12 +24,12 @@ func NewPhotoService(photoRepository repository.PhotoRepository) *photoService {
 	return &photoService{photoRepository}
 }
 
-func (s *photoService) CreatePhoto(input input.PhotoCreateInput, IdUser int) (entity.Photo, error) {
+func (s *photoService) CreatePhoto(input input.PhotoCreateInput, idUser int) (entity.Photo, error) {
 	newPhoto := entity.Photo{
 		Title:    input.Title,
 		Caption:  input.Caption,
 		PhotoURL: input.PhotoURL,
-		UserID:   IdUser,
+		UserID:   idUser,
 	}
 
 	createNewPhoto, err := s.photoRepository.Save(newPhoto)
@@ -42,8 +42,8 @@ func (s *photoService) CreatePhoto(input input.PhotoCreateInput, IdUser int) (en
 
 }
 
-func (s *photoService) GetPhotosUser(IdUser int) ([]entity.Photo, error) {
-	photos, err := s.photoRepository.FindByUserID(IdUser)
+func (s *photoService) GetPhotosUser(idUser int) ([]entity.Photo, error) {
+	photos, err := s.photoRepository.FindByUserID(idUser)
 
 	if err != nil {
 		return []entity.Photo{}, err
@@ -62,7 +62,7 @@ func (s *photoService) GetPhotosAll() ([]entity.Photo, error) {
 	return photos, nil
 }
 
-func (s *photoService) DeletePhoto(idPhoto int, IdUser int) (entity.Photo, error) {
+func (s *photoService) DeletePhoto(idPhoto int, idUser int) (entity.Photo, error) {
 	photoQuery, err := s.photoRepository.FindByID(idPhoto)
 
 	if err != nil {
@@ -73,7 +73,7 @@ func (s *photoService) DeletePhoto(idPhoto int, IdUser int) (entity.Photo, error
 		return entity.Photo{}, errors.New("photo not found")
 	}
 
-	if IdUser != photoQuery.UserID {
+	if idUser != photoQuery.UserID {
 		return entity.Photo{}, errors.New("can't delete other people's photo")
 	}
 
@@ -100,7 +100,7 @@ func (s *photoService) GetPhotoByID(idPhoto int) (entity.Photo, error) {
 	return photoQuery, nil
 }
 
-func (s *photoService) UpdatePhoto(IdUser int, idPhoto int, input input.PhotoUpdateInput) (entity.Photo, error) {
+func (s *photoService) UpdatePhoto(idUser int, idPhoto int, input input.PhotoUpdateInput) (entity.Photo, error) {
 
 	photoResult, err := s.photoRepository.FindByID(idPhoto)
 
@@ -112,7 +112,7 @@ func (s *photoService) UpdatePhoto(IdUser int, idPhoto int, input input.PhotoUpd
 		return entity.Photo{}, errors.New("photo not found")
 	}
 
-	if IdUser != photoResult.UserID {
+	if idUser != photoResult.UserID {
 		return entity.Photo{}, errors.New("can't update other people's photos")
 	}
 
