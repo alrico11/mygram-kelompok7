@@ -33,9 +33,8 @@ type SocialMediaGetResponse struct {
 }
 
 type SocialMediaUser struct {
-	ID              int    `json:"id"`
-	Username        string `json:"username"`
-	ProfileImageUrl string `json:"profile_image_url"`
+	ID       int    `json:"id"`
+	Username string `json:"username"`
 }
 
 type SocialMediaDeleteResponse struct {
@@ -58,9 +57,8 @@ func GetAllSocialMedia(social []entity.SocialMedia, user entity.User) ([]SocialM
 			CreatedAt: socialmedia.CreatedAt,
 			UpdateAt:  socialmedia.UpdatedAt,
 			User: SocialMediaUser{
-				ID:              socialmedia.User.ID,
-				Username:        socialmedia.User.Username,
-				ProfileImageUrl: socialmedia.User.Email,
+				ID:       socialmedia.User.ID,
+				Username: socialmedia.User.Username,
 			},
 		}
 

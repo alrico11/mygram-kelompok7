@@ -1,7 +1,7 @@
 package config
 
 import (
-	"reflect"
+	"fmt"
 	"testing"
 
 	"gorm.io/gorm"
@@ -20,12 +20,22 @@ func TestInitDB(t *testing.T) {
 		args args
 		want *gorm.DB
 	}{
-		// TODO: Add test cases.
+		{
+			name: "init db",
+			args: args{
+				username: "root",
+				password: "",
+				host:     "127.0.0.1",
+				port:     "3306",
+				dbName:   "db_belajar_golang",
+			},
+		},
 	}
+	fmt.Println(len(tests))
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := InitDB(tt.args.username, tt.args.password, tt.args.host, tt.args.port, tt.args.dbName); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("InitDB() = %v, want %v", got, tt.want)
+			if got := InitDB(tt.args.username, tt.args.password, tt.args.host, tt.args.port, tt.args.dbName); got == nil {
+				t.Errorf("InitDB() = %v, want %v", got, "not nil")
 			}
 		})
 	}
