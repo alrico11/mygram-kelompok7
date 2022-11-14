@@ -11,20 +11,18 @@ import (
 func InitDB() *gorm.DB {
 
 	// read db
-	dbUsername := os.Getenv("PGUSER")
-	dbPassword := os.Getenv("PGPASSWORD")
-	dbHost := os.Getenv("PGHOST")
-	dbPort := os.Getenv("PGPORT")
-	dbName := os.Getenv("PGDATABASE")
+	dbUsername := os.Getenv("MYSQLUSER")
+	dbPassword := os.Getenv("MYSQLPASSWORD")
+	dbHost := os.Getenv("MYSQLHOST")
+	dbPort := os.Getenv("MYSQLPORT")
+	dbName := os.Getenv("MYSQLDATABASE")
 
 	// read db
-	 psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-    "password=%s dbname=%s sslmode=disable",
-    dbHost, dbPort, dbUsername, dbPassword, dbName)
+	dsnString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUsername, dbPassword, dbHost, dbPort, dbName)
 
 
 	
-	db, err := sql.Open("postgres", psqlInfo)
+	db, err := gorm.Open(mysql.Open(dsnString), &gorm.Config{})
 	if err != nil {
 		fmt.Println(dsnString)
 		panic(err.Error())
@@ -32,3 +30,5 @@ func InitDB() *gorm.DB {
 
 	return db
 }
+Footer
+© 2022 GitHub, Inc.
