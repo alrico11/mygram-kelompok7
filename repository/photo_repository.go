@@ -24,7 +24,7 @@ func NewPhotoRepository(db *gorm.DB) *photoRepository {
 }
 
 func (r *photoRepository) Save(photo entity.Photo) (entity.Photo, error) {
-	err := r.db.Preload("User").Create(&photo).Error
+	err := r.db.Save(&photo).Error
 
 	if err != nil {
 		return entity.Photo{}, err
