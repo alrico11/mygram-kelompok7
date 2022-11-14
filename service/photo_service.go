@@ -62,7 +62,7 @@ func (s *photoService) GetPhotosAll() ([]entity.Photo, error) {
 	return photos, nil
 }
 
-func (s *photoService) DeletePhoto(idPhoto int, idUser int) (entity.Photo, error) {
+func (s *photoService) DeletePhoto(idPhoto int, IdUser int) (entity.Photo, error) {
 	photoQuery, err := s.photoRepository.FindByID(idPhoto)
 
 	if err != nil {
@@ -73,7 +73,7 @@ func (s *photoService) DeletePhoto(idPhoto int, idUser int) (entity.Photo, error
 		return entity.Photo{}, errors.New("photo not found")
 	}
 
-	if idUser != photoQuery.UserID {
+	if IdUser != photoQuery.UserID {
 		return entity.Photo{}, errors.New("can't delete other people's photo")
 	}
 
@@ -100,7 +100,7 @@ func (s *photoService) GetPhotoByID(idPhoto int) (entity.Photo, error) {
 	return photoQuery, nil
 }
 
-func (s *photoService) UpdatePhoto(idUser int, idPhoto int, input input.PhotoUpdateInput) (entity.Photo, error) {
+func (s *photoService) UpdatePhoto(IdUser int, idPhoto int, input input.PhotoUpdateInput) (entity.Photo, error) {
 
 	photoResult, err := s.photoRepository.FindByID(idPhoto)
 
@@ -112,7 +112,7 @@ func (s *photoService) UpdatePhoto(idUser int, idPhoto int, input input.PhotoUpd
 		return entity.Photo{}, errors.New("photo not found")
 	}
 
-	if idUser != photoResult.UserID {
+	if IdUser != photoResult.UserID {
 		return entity.Photo{}, errors.New("can't update other people's photos")
 	}
 
