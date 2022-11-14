@@ -2,7 +2,9 @@ package config
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"project2/model/entity"
 	"gorm.io/driver/mysql"
 
 	"gorm.io/gorm"
@@ -27,6 +29,14 @@ func InitDB() *gorm.DB {
 		fmt.Println(dsnString)
 		panic(err.Error())
 	}
+		if err != nil {
+		log.Fatal("DB Konek Eror")
+	}
+	fmt.Println("DB Berhasil Konek")
+	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.Comment{})
+	db.AutoMigrate(&entity.Photo{})
+	db.AutoMigrate(&entity.SocialMedia{})
 
 	return db
 }
