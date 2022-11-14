@@ -5,11 +5,11 @@ import (
 )
 
 type User struct {
-	ID        int       `json:"id" gorm:"primarykey,default"`
-	Username  string    `json:"username" gorm:"uniqueIndex"`
-	Email     string    `json:"email" gorm:"uniqueIndex"`
-	Password  string    `json:"password"`
-	Age       int       `json:"age"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"update_at"`
+	ID        int       
+	Username  string    
+	Email     string    
+	Password  string    
+	Age       int    
+	CreatedAt time.Time 
+	UpdatedAt time.Time 
 }
