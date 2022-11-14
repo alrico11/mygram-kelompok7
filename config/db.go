@@ -18,7 +18,9 @@ func InitDB() *gorm.DB {
 	dbName := os.Getenv("PGDATABASE")
 
 	// read db
-	dsnString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUsername, dbPassword, dbHost, dbPort, dbName)
+	 psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+    "password=%s dbname=%s sslmode=disable",
+    dbHost, dbPort, dbUsername, dbPassword, dbName)
 
 
 	
