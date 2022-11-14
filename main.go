@@ -38,10 +38,6 @@ func main() {
 	db.AutoMigrate(&entity.Comment{})
 	db.AutoMigrate(&entity.Photo{})
 	db.AutoMigrate(&entity.SocialMedia{})
-	db.AutoMigrate(&entity.User{})
-	db.AutoMigrate(&entity.Comment{})
-	db.AutoMigrate(&entity.Photo{})
-	db.AutoMigrate(&entity.SocialMedia{})
 	
 	userRepository := repository.NewUserRepository(db)
 	userService := service.NewUserService(userRepository)
