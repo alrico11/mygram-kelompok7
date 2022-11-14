@@ -30,5 +30,3 @@ func InitDB() *gorm.DB {
 
 	return db
 }
-Footer
-© 2022 GitHub, Inc.
