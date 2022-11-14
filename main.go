@@ -16,11 +16,11 @@ func main() {
 	_ = godotenv.Load()
 
 	port := os.Getenv("PORT")
-	dbUsername := os.Getenv("DATABASE_USERNAME")
-	dbPassword := os.Getenv("DATABASE_PASSWORD")
-	dbHost := os.Getenv("DATABASE_HOST")
-	dbPort := os.Getenv("DATABASE_PORT")
-	dbName := os.Getenv("DATABASE_NAME")
+	dbUsername := os.Getenv("MYSQLUSER")
+	dbPassword := os.Getenv("MYSQLPASSWORD")
+	dbHost := os.Getenv("MYSQLHOST")
+	dbPort := os.Getenv("MYSQLPORT")
+	dbName := os.Getenv("MYSQLDATABASE")
 
 	db := config.InitDB(dbUsername, dbPassword, dbHost, dbPort, dbName)
 
