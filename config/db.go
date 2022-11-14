@@ -22,7 +22,7 @@ func InitDB() *gorm.DB {
 
 
 	
-	db, err := gorm.Open(mysql.Open(dsnString), &gorm.Config{})
+	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		fmt.Println(dsnString)
 		panic(err.Error())
