@@ -1,12 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"project2/config"
 	"project2/controller"
 	"project2/middleware"
 	"project2/repository"
 	"project2/service"
-	"project2/model/entity"
+	
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -65,5 +66,5 @@ func main() {
 
 	// router.Run(":" + os.Getenv("PORT"))
 
-	router.Run(":" + port)
+	router.Run()
 }
