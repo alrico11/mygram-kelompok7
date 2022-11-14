@@ -19,6 +19,7 @@ func NewSocialMediaController(socialmediaService service.SocialMediaService, use
 	return &socialmediaController{socialmediaService, userService}
 }
 
+// Add New Social Media
 func (h *socialmediaController) AddNewSocialMedia(c *gin.Context) {
 	var input input.SocialInput
 
@@ -43,11 +44,10 @@ func (h *socialmediaController) AddNewSocialMedia(c *gin.Context) {
 		return
 	}
 
-	// send to service
+	// Send To Service
 	newSocialMedia, err := h.socialmediaService.CreateSocialMedia(input, currentUser)
 
 	if err != nil {
-		// errorMessages := helper.FormatValidationError(err)
 
 		response := helper.APIResponse("failed", err.Error())
 		c.JSON(http.StatusUnprocessableEntity, response)
@@ -66,6 +66,7 @@ func (h *socialmediaController) AddNewSocialMedia(c *gin.Context) {
 	c.JSON(http.StatusCreated, response)
 }
 
+// Delete Social Media by id
 func (h *socialmediaController) DeleteSocialmedia(c *gin.Context) {
 	currentUser := c.MustGet("currentUser").(int)
 
@@ -114,6 +115,7 @@ func (h *socialmediaController) DeleteSocialmedia(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// Get All Social Medias
 func (h *socialmediaController) GetSocialMedia(c *gin.Context) {
 	currentUser := c.MustGet("currentUser").(int)
 
@@ -155,6 +157,7 @@ func (h *socialmediaController) GetSocialMedia(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// Edit/Update Social Media (Name or URL)
 func (h *socialmediaController) UpdateSocialMedia(c *gin.Context) {
 	currentUser := c.MustGet("currentUser").(int)
 
