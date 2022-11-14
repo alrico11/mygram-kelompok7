@@ -1,7 +1,6 @@
 package main
 
 import (
-	"os"
 	"project2/config"
 	"project2/controller"
 	"project2/middleware"
