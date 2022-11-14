@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"project2/model/entity"
 	"project2/config"
 	"project2/controller"
 	"project2/middleware"
@@ -20,6 +21,11 @@ func main() {
 	}
 
 	db := config.InitDB()
+	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.Comment{})
+	db.AutoMigrate(&entity.Photo{})
+	db.AutoMigrate(&entity.SocialMedia{})
+
 	
 	userRepository := repository.NewUserRepository(db)
 	userService := service.NewUserService(userRepository)
