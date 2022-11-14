@@ -21,14 +21,16 @@ func InitDB() *gorm.DB {
 	// read db
 	dsnString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUsername, dbPassword, dbHost, dbPort, dbName)
 
+		db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.Comment{})
+	db.AutoMigrate(&entity.Photo{})
+	db.AutoMigrate(&entity.SocialMedia{})
+	
 	db, err := gorm.Open(mysql.Open(dsnString), &gorm.Config{})
 	if err != nil {
 		fmt.Println(dsnString)
 		panic(err.Error())
 	}
-	db.AutoMigrate(&entity.User{})
-	db.AutoMigrate(&entity.Comment{})
-	db.AutoMigrate(&entity.Photo{})
-	db.AutoMigrate(&entity.SocialMedia{})
+
 	return db
 }
