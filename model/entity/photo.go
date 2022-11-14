@@ -5,13 +5,13 @@ import (
 )
 
 type Photo struct {
-	ID        int       `json:"id"`
-	Title     string    `json:"title"`
-	Caption   string    `json:"caption"`
-	PhotoURL  string    `json:"photo_url"`
-	UserID    int       `json:"user_id"`
-	CreatedAt time.Time `json:"-"`
-	UpdatedAt time.Time `json:"-"`
+	ID        int 
+	Title     string
+	Caption   string 
+	PhotoURL  string
+	UserID    int   
+	CreatedAt time.Time 
+	UpdatedAt time.Time 
 	User      User
 }
 
