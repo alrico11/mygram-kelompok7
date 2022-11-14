@@ -14,30 +14,12 @@ import (
 )
 
 func main() {
-	_ = godotenv.Load()
-
-	port := os.Getenv("PORT")
-	dbUsername := os.Getenv("MYSQLUSER")
-	dbPassword := os.Getenv("MYSQLPASSWORD")
-	dbHost := os.Getenv("MYSQLHOST")
-	dbPort := os.Getenv("MYSQLPORT")
-	dbName := os.Getenv("MYSQLDATABASE")
-
-	db := config.InitDB(dbUsername, dbPassword, dbHost, dbPort, dbName)
-
-		if err != nil {
-		fmt.Println(dsnString)
-		panic(err.Error())
-	}
+	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("DB Konek Eror")
+		fmt.Println("Error loading .env file")
 	}
-	
-	fmt.Println("DB Berhasil Konek")
-	db.AutoMigrate(&entity.User{})
-	db.AutoMigrate(&entity.Comment{})
-	db.AutoMigrate(&entity.Photo{})
-	db.AutoMigrate(&entity.SocialMedia{})
+
+	db := config.InitDB()
 	
 	userRepository := repository.NewUserRepository(db)
 	userService := service.NewUserService(userRepository)
