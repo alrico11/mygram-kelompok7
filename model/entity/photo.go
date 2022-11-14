@@ -15,6 +15,3 @@ type Photo struct {
 	User      User
 }
 
-func (Photo) TableName() string {
-	return "photo"
-}
