@@ -12,7 +12,6 @@ import (
 func InitDB() *gorm.DB {
 
 	// read db
-	port := os.Getenv("PORT")
 	dbUsername := os.Getenv("MYSQLUSER")
 	dbPassword := os.Getenv("MYSQLPASSWORD")
 	dbHost := os.Getenv("MYSQLHOST")
