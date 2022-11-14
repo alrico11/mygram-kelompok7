@@ -43,7 +43,7 @@ func (s *photoService) CreatePhoto(input input.PhotoCreateInput, IdUser int) (en
 }
 
 func (s *photoService) GetPhotosUser(IdUser int) ([]entity.Photo, error) {
-	photos, err := s.photoRepository.FindByUserID(idUser)
+	photos, err := s.photoRepository.FindByUserID(IdUser)
 
 	if err != nil {
 		return []entity.Photo{}, err
