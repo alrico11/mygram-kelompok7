@@ -4,7 +4,7 @@ My Gram is a rest api that functions to manage users, save a photo or make comme
 # Installation
 Requires [Golang](https://go.dev/dl/) and [MySQL](https://dev.mysql.com/downloads/installer/)
 
-Edit .env first to sql configuration and server port
+Config the .env first to connect into database
 
 - **Clone repository**
 ```
