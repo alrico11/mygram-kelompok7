@@ -21,42 +21,42 @@ go run main.go
 
 # Endpoint
 ## User
-**`POST`**	  - http://localhost:8080/users/register	      - **Create User Account**
+**`POST`**	  - https://mygram-kelompok7-production.up.railway.app/users/register	      - **Create User Account**
 
-**`POST`**	  - http://localhost:8080/users/login	          - **Login User**
+**`POST`**	  - https://mygram-kelompok7-production.up.railway.app/users/login	          - **Login User**
 
-**`PUT`**	    - http://localhost:8080/users/		            - **Update Data User**
+**`PUT`**	    - https://mygram-kelompok7-production.up.railway.app/users/		            - **Update Data User**
 
-**`DELETE`**	- http://localhost:8080/users/		            - **Delete User Account**
+**`DELETE`**	- https://mygram-kelompok7-production.up.railway.app/users/		            - **Delete User Account**
 
 ## Photos
-**`POST`**  	- http://localhost:8080/photos/		            - **Post a Photo**
+**`POST`**  	- https://mygram-kelompok7-production.up.railway.app/photos/		            - **Post a Photo**
 
-**`GET`**	    - http://localhost:8080/photos/		            - **Get All Photo**
+**`GET`**	    - https://mygram-kelompok7-production.up.railway.app/photos/		            - **Get All Photo**
 
-**`PUT`**	    - http://localhost:8080/photos/:photoId	      - **Update Photo Posted**
+**`PUT`**	    - https://mygram-kelompok7-production.up.railway.app/photos/:photoId	      - **Update Photo Posted**
 
-**`DELETE`**	- http://localhost:8080/photos/:photoId	      - **Delete Photo Posted**
+**`DELETE`**	- https://mygram-kelompok7-production.up.railway.app/photos/:photoId	      - **Delete Photo Posted**
 
 ## Comments
 
-**`POST`**  	- http://localhost:8080/comments/		            - **Post a Comment**
+**`POST`**  	- https://mygram-kelompok7-production.up.railway.app/comments/		            - **Post a Comment**
 
-**`GET`**	    - http://localhost:8080/comments/		            - **Get Comment User**
+**`GET`**	    - https://mygram-kelompok7-production.up.railway.app/comments/		            - **Get Comment User**
 
-**`PUT`**	    - http://localhost:8080/comments/:commentId	    - **Update User Comment Posted**
+**`PUT`**	    - https://mygram-kelompok7-production.up.railway.app/comments/:commentId	    - **Update User Comment Posted**
 
-**`DELETE`**	- http://localhost:8080/comments/:commentId	    - **Delete User Comment Posted**
+**`DELETE`**	- https://mygram-kelompok7-production.up.railway.app/comments/:commentId	    - **Delete User Comment Posted**
 
 ## Social Media
 
-**`POST`**	  - http://localhost:8080/socialmedias/			          - **Post a Social Media info**
+**`POST`**	  - https://mygram-kelompok7-production.up.railway.app/socialmedias/			          - **Post a Social Media info**
 
-**`GET`**	    - http://localhost:8080/socialmedias/			          - **Get User Social Media**
+**`GET`**	    - https://mygram-kelompok7-production.up.railway.app/socialmedias/			          - **Get User Social Media**
 
-**`PUT`**	    - http://localhost:8080/socialmedias/:socialMediaId	- **Update Social Media info User**
+**`PUT`**	    - https://mygram-kelompok7-production.up.railway.app/socialmedias/:socialMediaId	- **Update Social Media info User**
 
-**`DELETE`**	- http://localhost:8080/socialmedias/:socialMediaId	- **Delete Social Media info User**
+**`DELETE`**	- https://mygram-kelompok7-production.up.railway.app/socialmedias/:socialMediaId	- **Delete Social Media info User**
 
 # Group 7
 1. **[Alrico Rizki Wibowo](https://github.com/alrico11)** - GLNG-KS04-017
