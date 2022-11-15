@@ -102,4 +102,4 @@ Ricky Khairul Faza mengerjakan beberapa hal berikut :
 - ``Endpoint``	: PUT /comments/:commentId
 - ``Endpoint``	: DELETE /comments/:commentId
 - ``Documentation``	: Postman Collection
-- ``Documentation``	: Add README.md
+- ``Additional``	: Add README.md
