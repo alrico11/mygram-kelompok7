@@ -8,7 +8,7 @@ Edit .env first to sql configuration and server port
 
 - **Clone repository**
 ```
-git clone https://github.com/alrico11/Final-Project-2-Hacktiv8-KampusMerdeka.git
+git clone https://github.com/alrico11/mygram-kelompok7.git
 ```
 - **Change directory**
 ```
@@ -59,9 +59,9 @@ go run main.go
 **`DELETE`**	- https://mygram-kelompok7-production.up.railway.app/socialmedias/:socialMediaId	- **Delete Social Media info User**
 
 # Group 7
-1. **[Alrico Rizki Wibowo](https://github.com/alrico11)** - GLNG-KS04-017
-2. **[Ricky Khairul Faza](https://github.com/rickyfazaa)** - GLNG-KS04-022
-3. **[Muhammad Rafid](https://github.com/mrafid01)** - GLNG-KS04-024
+1. **[Alrico Rizki Wibowo](https://github.com/alrico11)**   - GLNG-KS04-017
+2. **[Ricky Khairul Faza](https://github.com/rickyfazaa)**  - GLNG-KS04-022
+3. **[Muhammad Rafid](https://github.com/mrafid01)**  - GLNG-KS04-024
 
 ## Pembagian Tugas
 ### Alrico Rizki Wibowo
