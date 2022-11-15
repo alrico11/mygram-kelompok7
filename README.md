@@ -12,7 +12,7 @@ git clone https://github.com/alrico11/mygram-kelompok7.git
 ```
 - **Change directory**
 ```
-cd Final-Project-2-Hacktiv8-KampusMerdeka
+cd mygram-kelompok7
 ```
 - **Run "main.go" file**
 ```
