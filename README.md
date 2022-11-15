@@ -6,14 +6,15 @@ Requires [Golang](https://go.dev/dl/) and [MySQL](https://dev.mysql.com/download
 
 Edit .env first to sql configuration and server port
 
-Create a "db_belajar_golang" database
-
+- **Clone repository**
 ```
 git clone https://github.com/alrico11/Final-Project-2-Hacktiv8-KampusMerdeka.git
 ```
+- **Change directory**
 ```
 cd Final-Project-2-Hacktiv8-KampusMerdeka
 ```
+- **Run "main.go" file**
 ```
 go run main.go
 ```
@@ -58,9 +59,9 @@ go run main.go
 **`DELETE`**	- http://localhost:8080/socialmedias/:socialMediaId	- **Delete Social Media info User**
 
 # Group 7
-1. **[Alrico Rizki Wibowo](https://github.com/alrico11)**
-2. **[Muhammad Rafid](https://github.com/mrafid01)**
-3. **[Ricky Khairul Faza](https://github.com/rickyfazaa)**
+1. **[Alrico Rizki Wibowo](https://github.com/alrico11)** - GLNG-KS04-017
+2. **[Ricky Khairul Faza](https://github.com/rickyfazaa)** - GLNG-KS04-022
+3. **[Muhammad Rafid](https://github.com/mrafid01)** - GLNG-KS04-024
 
 ## Pembagian Tugas
 ### Alrico Rizki Wibowo
@@ -73,6 +74,7 @@ Alrico Rizki Wibowo mengerjakan beberapa hal berikut :
 - ``Endpoint`` : GET /comments
 - ``Endpoint`` : PUT /comments/:commentId
 - ``Endpoint`` : DELETE /comments/:commentId
+- ``Endpoint`` : Deploy API to Railway App
 - ``Helper`` : Generate Password, Verify Password, jwt, dan Validator
 
 ### Muhammad Rafid
@@ -98,3 +100,5 @@ Ricky Khairul Faza mengerjakan beberapa hal berikut :
 - ``Endpoint``	: GET /comments
 - ``Endpoint``	: PUT /comments/:commentId
 - ``Endpoint``	: DELETE /comments/:commentId
+- ``Documentation``	: Postman Collection
+- ``Documentation``	: Add README.md
