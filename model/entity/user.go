@@ -5,9 +5,9 @@ import (
 )
 
 type User struct {
-	ID        int       
+	ID        int       `gorm:"primaryKey"`
 	Username  string    
-	Email     string    
+	Email     string    `gorm:"unique"`
 	Password  string    
 	Age       int    
 	CreatedAt time.Time 
