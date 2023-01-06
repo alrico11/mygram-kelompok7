@@ -5,14 +5,14 @@ import (
 )
 
 type Photo struct {
-	ID        int
+	ID        int `gorm:"primaryKey"`
 	Title     string
 	Caption   string 
 	PhotoURL  string
 	UserID    int   
 	CreatedAt time.Time 
 	UpdatedAt time.Time 
-	User      User
+	User      User `gorm:"foreignKey:UserID;Constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
 func (Photo) TableName() string {
